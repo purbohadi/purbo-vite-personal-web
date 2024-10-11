@@ -1,73 +1,48 @@
-import profilePicture from "./assets/profilePicture.jpg";
-import IST from "./assets/universities/IST.png";
-import THU from "./assets/universities/THU.png";
-import Telecom from "./assets/universities/Telecom.png";
+import myProfilePicture from "./assets/myProfilePicture.jpg";
+import ELTE from "./assets/universities/ELTE.png";
+import UB from "./assets/universities/UB.png";
 import questionMark from "./assets/emojis/questionMark.png";
-import PT from "./assets/emojis/PT.png";
-import FR from "./assets/emojis/FR.png";
-import CN from "./assets/emojis/CN.png";
+import ID from "./assets/emojis/id.svg";
+import HU from "./assets/emojis/hu.svg";
 import { University, Experience } from "./types";
 
 // Informations to be used in the Navbar and Home section
-export const firstName: string = "Filipe";
-export const lastName: string = "Nogueira";
-export const cvLink: string =
-  "https://drive.google.com/file/d/1pGR4YFF2zZHYWLu1mpNMHczHDjQkagSP/view?usp=sharing"; // Link where you have your cv hosted (ex: Google Drive)
-export const smallDescription: string = "A Student and Developer."; // A small description of yourself for the first section
-export const profileImage: string = profilePicture;
+export const firstName: string = "Purbohadi";
+export const lastName: string = "Utomo";
+export const smallDescription: string = "A Husband, A Father and A Developer."; // A small description of yourself for the first section
+export const profileImage: string = myProfilePicture;
 
 // Information to be used in the Education section
 export const universities: University[] = [
   {
-    logo: IST,
-    name: "Instituto Superior Técnico",
+    logo: UB,
+    name: "Brawijaya University",
     degreeType: "Bachelor's degree",
-    degree: "Computer Science and Telecommunications Engineering",
+    degree: "Informatics and Computer Engineering",
     description:
-      "Final Project done with INESC-ID on a Anonimization application to help Supreme Justice Court's workers.",
-    duration: "2020 - 2024",
-    url: "https://tecnico.ulisboa.pt/pt/",
-    countryFlag: PT,
+      "Final Project: Mobile Email AES-Rijndael Algorithm Implementation",
+    duration: "2002 - 2008",
+    url: "https://www.brawijaya.ac.id/en/",
+    countryFlag: ID,
   },
   {
-    logo: Telecom,
-    name: "Télécom Paris",
-    degreeType: "Exchange Program (Athens Program)",
-    degree: "Formal Methods",
+    logo: ELTE,
+    name: "Eötvös Loránd University",
+    degreeType: "Master of Science",
+    degree: "Computational and Cognitive Neuroscience",
     description:
-      "Intensive 1-week course, where I had my first opportunity to study abroad, and get to know people from all over the world.",
-    duration: "Nov 2023",
-    url: "https://www.telecom-paris.fr/",
-    countryFlag: FR,
-  },
-  {
-    logo: THU,
-    name: "Tsinghua University",
-    degreeType: "Exchange Program",
-    degree: "Computer Science",
-    description:
-      "#11 Computer Science University on the World (QS Top Universities 31/05/2024). Definetly the best opportunity of my life. Moving to the other side of the world made me grow a lot, personally and professionally. Discovered a culture totally different from mine, and the connections made here were huge. Grade: X.X/4.0",
-    duration: "Feb 2024 - Jun 2024",
-    url: "https://www.tsinghua.edu.cn/en/index.htm",
-    countryFlag: CN,
-  },
-  {
-    logo: IST,
-    name: "Instituto Superior Técnico",
-    degreeType: "Master's degree",
-    degree: "Computer Science and Telecommunications Engineering",
-    description: "Specializations: Cybersecurity & Data Science",
-    duration: "2023 - 2025",
-    url: "https://tecnico.ulisboa.pt/pt/",
-    countryFlag: PT,
+      "2 years of learning while travelling in the field of Cognitive Neuroscience, with a focus on the neural basis of human language.",
+    duration: "2017 - 2019",
+    url: "https://www.elte.hu/en/",
+    countryFlag: HU,
   },
   {
     logo: questionMark,
     name: "Unknown",
     degreeType: "PhD",
-    degree: "Computer Science",
+    degree: "AI and Cybersecurity",
     description:
-      "It's still an unknown, but maybe on the future, if it arises a PhD degree, it would be Artificial Intelligence or Cybersecurity related. The university that I will choose, will be somewhere in Asia or USA. Until then I want to gain more work experience in startups.",
+      "It's still an unknown, but maybe on the future, if it arises a PhD degree, it would be Artificial Intelligence or Cybersecurity related. The university that I will choose, will be somewhere in Japan or Europe. Until then I want to gain more work experience in tech industries.",
     duration: "",
     url: "",
     countryFlag: questionMark,
@@ -77,26 +52,52 @@ export const universities: University[] = [
 // Information to be used in the Education section
 export const experiences: Experience[] = [
   {
-    role: "Web Dev Team Lead",
-    company: "Twinkle",
-    duration: "Jun 2022 - Present",
+    role: "Senior Web Developer",
+    company: "S-Quantum Engine (Sinarmas)",
+    duration: "Jan 2024 - Present",
     description:
-      "Twinkle is a startup aimed at enhancing the restaurant experience through innovative on-premise ordering, payment, and reservation solutions. We've developed three main products, all connected through a unified API. I lead the development of the startup's websites, and connecting it to a backend.",
+      "SQE is Making impact to millions of lives Dig into the ways we've transformed financial services, and the discoveries we've made on our path to success. ",
   },
   {
-    role: "Web Developer",
-    company: "Student Hub",
-    duration: "Aug 2024 - Present",
+    role: "Lead Mobile Developer",
+    company: "Kepercayaan Informasi Terintegrasi (Sinarmas)",
+    duration: "Jul 2022 - Dec 2023",
     description:
-      "Developing the web app of one of the company's products. Constantly collaborating with the backend and design teams, to keep improving the product. Using technologies like React.js, TypeScript, Vite and Next.js.",
+      "Developing the website for company website to showcase company's products. Constantly collaborating with the product and design teams, to keep improving the product. Using technologies like React.js, TypeScript, Vue.js. Integrating our products with 3rd party APIs and other Sinarmas Businesses Unit",
+  },
+  {
+    role: "Product Owner",
+    company: "Aino Indonesia",
+    duration: "Feb 2020 - Apr 2021",
+    description:
+      "Tech Lead and team development plan. Delivering end to end products that generate 1000-1500 daily transactions. Problem-solving and operational improvement. Design end to end and full-cycle system. Conduct requirement gathering and propose a win-win full product solution for clients and developers. Create an improved standard for development of best practice and operational excellence.",
+  },
+  {
+    role: "System Analyst",
+    company: "Aino Indonesia",
+    duration: "Oct 2019 - Jan 2020",
+    description:
+      "Analyze the Legacy system and propose a solution to make it better. Create a technical document to fix or improve running software. Code to fix and improve the running system. Deliver end to end solutions to optimize operational costs.",
+  },
+  {
+    role: "Lead Engineer",
+    company: "Samsung R&D Institute Indonesia",
+    duration: "Jun 2012 - Aug 2017",
+    description:
+      "Software Quality Engineer created test automation script using Java for Android apps and Web apps. Generated a test plan to be executed during test period or ad hoc test. Taught for automation class to explain how things work in automation testing world. Android App Engineer Maintained production lives app on Samsung Global and Local Apps. Find Bugs and fix it in a proper way. Developed new feature while maintaining code style and readability. Created unit testing for the apps. Knowledge sharing for App and new ideas. Conducted daily standup and collaborate with the project manager and quality engineer. Blackberry Developer Maintained and bug fixing for Chat application for Samsung. Developed new feature and test the code. Created documentation for the code. Collaborated with the engineer, UI/UX, quality engineer and project manager from Headquarter.",
+  },
+  {
+    role: "Jatis Mobile",
+    company: "Unit Head",
+    duration: "Feb 2009 - Mar 2011",
+    description:
+      "Conducted research activities in the mobile solution, collaborative commerce, and mobile payment. Developed and implemented Proof of Concept (POC). Gaved advice and designed system for the mobile solution. Provide consultation on mobile solution in collaborative commerce.",
   },
 ];
 
 // Information to be used in the footer
 export const sourceCodeLink: string =
-  "https://github.com/filipernogueira/react-personal-website";
+  "https://github.com/purbohadi/vite-react-personal-web";
 export const linkedinLink: string =
-  "https://www.linkedin.com/in/-filipe-nogueira/";
-export const githubLink: string = "https://github.com/filipernogueira";
-export const instagramLink: string =
-  "https://www.instagram.com/filipernogueira/";
+  "https://www.linkedin.com/in/purbohadiutomo/";
+export const githubLink: string = "https://github.com/purbohadi";

@@ -2,14 +2,12 @@
 
 This repo contains my personal website, built using React with TypeScript and Vite. You can use it as a template for your own portfolio website. Follow the setup steps below to customize it with your information.
 
-You can check my website [Here](https://filipernogueira.github.io/react-personal-website/).
-
 ## Setup
 
 ### Information Replacement
 
--   To set up this project as your personal website, start by replacing all the information in the file `/src/information.ts` with your own details;
--   After that, upload your picture to `/src/assets/profilePicture.jpg`.
+- To set up this project as your personal website, start by replacing all the information in the file `/src/information.ts` with your own details;
+- After that, upload your picture to `/src/assets/myProfilePicture.jpg`.
 
 ### Contact Section
 
