@@ -8,9 +8,10 @@ export default function SimpleRegistrationForm({
   darkMode: boolean;
 }) {
   const [formData, setFormData] = useState({
-    from_name: "",
+    customer_name: "",
     reply_to: "",
     message: "",
+    to_name: "purbohadi.utomo@gmail.com",
   });
 
   const SERVICE_ID: string = import.meta.env.VITE_SERVICE_ID;
@@ -28,7 +29,7 @@ export default function SimpleRegistrationForm({
     e.preventDefault();
 
     if (
-      formData.from_name !== "" &&
+      formData.customer_name !== "" &&
       formData.reply_to !== "" &&
       formData.message !== "" &&
       validateEmail(formData.reply_to)
@@ -78,7 +79,7 @@ export default function SimpleRegistrationForm({
             Name
           </Typography>
           <Input
-            name="from_name"
+            name="customer_name"
             size="lg"
             placeholder="Your name"
             className={`!border-t-blue-gray-200 focus:!border-t-gray-900 ${
