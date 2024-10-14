@@ -9,9 +9,8 @@ export default function SimpleRegistrationForm({
 }) {
   const [formData, setFormData] = useState({
     customer_name: "",
-    reply_to: "",
+    email: "",
     message: "",
-    to_name: "purbohadi.utomo@gmail.com",
   });
 
   const SERVICE_ID: string = import.meta.env.VITE_SERVICE_ID;
@@ -30,9 +29,9 @@ export default function SimpleRegistrationForm({
 
     if (
       formData.customer_name !== "" &&
-      formData.reply_to !== "" &&
+      formData.email !== "" &&
       formData.message !== "" &&
-      validateEmail(formData.reply_to)
+      validateEmail(formData.email)
     ) {
       emailjs.send(SERVICE_ID, TEMPLATE_ID, formData, USER_ID).then(
         (response) => {
@@ -98,7 +97,7 @@ export default function SimpleRegistrationForm({
             Email
           </Typography>
           <Input
-            name="reply_to"
+            name="email"
             size="lg"
             placeholder="name@mail.com"
             className={`!border-t-blue-gray-200 focus:!border-t-gray-900 ${
