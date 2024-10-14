@@ -22,7 +22,7 @@ export const universities: University[] = [
     description:
       "Final Project: Mobile Email AES-Rijndael Algorithm Implementation",
     duration: "2002 - 2008",
-    url: "https://www.brawijaya.ac.id/en/",
+    url: "https://www.ub.ac.id/en/",
     countryFlag: ID,
   },
   {
@@ -56,14 +56,21 @@ export const experiences: Experience[] = [
     company: "S-Quantum Engine (Sinarmas)",
     duration: "Jan 2024 - Present",
     description:
-      "SQE is Making impact to millions of lives Dig into the ways we've transformed financial services, and the discoveries we've made on our path to success. ",
+      "Collaborates with SQE Developers, QAs, and DevOps to enhance Messaging Platform for 100000+ customers. Implements CI/CD automation using Github Action to streamline development process. Contributes to UI components development and improved agile development processes. Maintains and improves the code quality of the platform. Collaborates with the product and design teams to ensure that the product is delivered on time and within budget. Conducts regular meetings with the team to discuss progress and address any issues.",
   },
   {
     role: "Lead Mobile Developer",
     company: "Kepercayaan Informasi Terintegrasi (Sinarmas)",
     duration: "Jul 2022 - Dec 2023",
     description:
-      "Developing the website for company website to showcase company's products. Constantly collaborating with the product and design teams, to keep improving the product. Using technologies like React.js, TypeScript, Vue.js. Integrating our products with 3rd party APIs and other Sinarmas Businesses Unit",
+      "Developing the website for company website to showcase company's products. Constantly collaborating with the product and design teams, to keep improving the product. Using technologies like React.js, TypeScript, Vue.js. Integrating our products with 3rd party APIs and other Sinarmas Busineses Unit",
+  },
+  {
+    role: "Engineering Manager",
+    company: "Prixa",
+    duration: "Nov 2021 - Jun 2022",
+    description:
+      "Lead team of engineers, responsible for the development of the product. Working with the team to develop the product, ensuring that it meets the requirements and specifications. Collaborate with the team to ensure that the product is delivered on time and within budget. Conduct regular meetings with the team to discuss progress and address any issues.",
   },
   {
     role: "Product Owner",
