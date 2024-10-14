@@ -8,7 +8,7 @@ export default function SimpleRegistrationForm({
   darkMode: boolean;
 }) {
   const [formData, setFormData] = useState({
-    customer_name: "",
+    name: "",
     email: "",
     message: "",
   });
@@ -28,7 +28,7 @@ export default function SimpleRegistrationForm({
     e.preventDefault();
 
     if (
-      formData.customer_name !== "" &&
+      formData.name !== "" &&
       formData.email !== "" &&
       formData.message !== "" &&
       validateEmail(formData.email)
@@ -78,7 +78,7 @@ export default function SimpleRegistrationForm({
             Name
           </Typography>
           <Input
-            name="customer_name"
+            name="name"
             size="lg"
             placeholder="Your name"
             className={`!border-t-blue-gray-200 focus:!border-t-gray-900 ${
