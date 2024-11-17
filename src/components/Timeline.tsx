@@ -29,6 +29,7 @@ export default function TimelineWithIcon({ darkMode }: { darkMode: boolean }) {
     <ComputerDesktopIcon className={`h-4 w-4 ${darkMode ? "" : ""}`} />,
     <ComputerDesktopIcon className={`h-4 w-4 ${darkMode ? "" : ""}`} />,
     <ComputerDesktopIcon className={`h-4 w-4 ${darkMode ? "" : ""}`} />,
+    <ComputerDesktopIcon className={`h-4 w-4 ${darkMode ? "" : ""}`} />,
   ];
 
   return (
