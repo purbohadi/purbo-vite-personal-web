@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useUserStore } from "../../store/userStore";
-import { UserSecurity, UserSession } from "../../types";
+import { UserSession } from "../../types";
 import { isStrongPassword, getPasswordStrength } from "../../utils/validators";
 import { formatRelativeTime } from "../../utils/formatters";
 

@@ -3,7 +3,6 @@ import {
     Transaction, 
     ExpenseCategory, 
     Contact, 
-    UserProfile,
     BalanceHistory,
     WeeklyActivity,
     CompleteUserData
@@ -54,7 +53,7 @@ import {
     },
     
     // Contacts
-    getFrequentContacts: async (limit: number = 4): Promise<Contact[]> => {
+    getFrequentContacts: async (): Promise<Contact[]> => {
       await delay(250);
       return [...contactData]
         .sort((a, b) => b.frequency - a.frequency);
@@ -94,7 +93,7 @@ import {
     },
   
     // Simulated transfer
-    makeTransfer: async (contactId: string, amount: number): Promise<{success: boolean}> => {
+    makeTransfer: async (): Promise<{success: boolean}> => {
       await delay(800);
       // Simulate successful transfer (would include validation in a real app)
       return { success: true };

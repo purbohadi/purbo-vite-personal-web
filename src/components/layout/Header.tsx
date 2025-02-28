@@ -3,7 +3,7 @@ import { useState, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useUserStore } from "../../store/userStore";
 import { useOutsideClick } from "../../hooks/useOutsideClick";
-import { useIsMobile } from "../../hooks/useMediaQuery";
+import { useIsMobile, useIsTablet } from "../../hooks/useMediaQuery";
 import Avatar from "../common/Avatar";
 import SettingIcon from "../../assets/icons/setting.svg";
 import NotificationBellIcon from "../../assets/icons/notification-bell.svg";
@@ -32,6 +32,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
   const { profile, logout } = useUserStore();
   const dropdownRef = useRef<HTMLDivElement>(null);
   const isMobile = useIsMobile();
+  const isTablet = useIsTablet();
   const location = useLocation();
 
   // Get the current page title based on the route
@@ -70,40 +71,89 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
     // Redirect to login or home page if needed
   };
 
-  return (
-    <header className="bg-white h-16 px-4 md:px-6 flex items-center justify-between shadow-sm z-10">
-      {/* Mobile menu button - only on mobile */}
-      {isMobile && (
-        <button
-          type="button"
-          className="inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:text-gray-600 hover:bg-gray-100"
-          onClick={onMenuClick}
-        >
-          <span className="sr-only">Open sidebar</span>
-          <svg
-            className="h-6 w-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          </svg>
-        </button>
-      )}
+  // Mobile layout - two-row design with search below the header
+  if (isMobile) {
+    return (
+      <div className="sticky top-0 z-10 bg-white shadow-sm">
+        {/* Top row: Menu, title, avatar */}
+        <div className="flex items-center justify-between h-16 px-4">
+          {/* Hamburger menu button */}
+          <button type="button" className="text-gray-600" onClick={onMenuClick}>
+            <svg
+              className="h-6 w-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
 
-      <h1 className="text-2xl font-bold text-primary-title">{pageTitle}</h1>
+          {/* Centered title */}
+          <h1 className="text-xl font-semibold text-primary-title">
+            {pageTitle}
+          </h1>
 
-      {/* Right section - Notification and Profile */}
-      <div className="flex items-center space-x-4">
-        {/* Search input */}
-        <div className={`${isMobile ? "w-full ml-4" : "max-w-64 w-full"}`}>
+          {/* Profile avatar */}
+          <div ref={dropdownRef}>
+            <button
+              onClick={() => setIsProfileOpen(!isProfileOpen)}
+              aria-label="Open profile menu"
+            >
+              <Avatar
+                src={profile?.profileImage}
+                alt={profile?.name || "User"}
+                size="sm"
+              />
+            </button>
+
+            {/* Profile dropdown */}
+            {isProfileOpen && (
+              <div className="absolute right-4 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
+                <div className="py-1">
+                  <div className="px-4 py-2 border-b">
+                    <p className="text-sm font-medium text-gray-900">
+                      {profile?.name || "User"}
+                    </p>
+                    <p className="text-xs text-gray-500 truncate">
+                      {profile?.email || "user@example.com"}
+                    </p>
+                  </div>
+                  <Link
+                    to="/settings"
+                    className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    onClick={() => setIsProfileOpen(false)}
+                  >
+                    My Profile
+                  </Link>
+                  <Link
+                    to="/settings"
+                    className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    onClick={() => setIsProfileOpen(false)}
+                  >
+                    Settings
+                  </Link>
+                  <button
+                    className="flex w-full items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    onClick={handleLogout}
+                  >
+                    Sign out
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Bottom row: Search input */}
+        <div className="px-4 pb-4">
           <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
               <svg
                 className="h-5 w-5 text-gray-400"
                 fill="none"
@@ -122,26 +172,88 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-3xl text-sm placeholder-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="block w-full pl-10 pr-3 py-3 bg-gray-50 border-0 rounded-3xl text-sm placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              placeholder="Search for something"
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <header className="bg-white h-16 px-4 md:px-6 flex items-center justify-between shadow-sm z-10">
+      {/* Left section - Hamburger menu (tablet only) and Page Title */}
+      <div className="flex items-center">
+        {isTablet && (
+          <button
+            type="button"
+            className="inline-flex items-center justify-center p-2 mr-3 rounded-md text-gray-500 hover:text-gray-600 hover:bg-gray-100"
+            onClick={onMenuClick}
+          >
+            <span className="sr-only">Open sidebar</span>
+            <svg
+              className="h-6 w-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
+        )}
+        <h1 className="text-2xl font-bold text-primary-title">{pageTitle}</h1>
+      </div>
+
+      {/* Right section - Search, Settings, Notifications, and Profile */}
+      <div className="flex items-center space-x-3">
+        {/* Search input */}
+        <div className="max-w-xs w-56">
+          <div className="relative">
+            <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+              <svg
+                className="h-4 w-4 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            </div>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="block w-full pl-9 pr-3 py-2 border border-gray-300 rounded-3xl text-sm placeholder-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               placeholder="Search for something"
             />
           </div>
         </div>
 
         {/* Setting */}
-        <button className="p-2 rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none max-w-12 max-h-12">
+        <button className="p-2 rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none">
           <span className="sr-only">View setting</span>
-          <img src={SettingIcon} alt="setting" width={25} height={25} />
+          <img src={SettingIcon} alt="setting" width={22} height={22} />
         </button>
 
         {/* Notification Bell */}
-        <button className="p-2 rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none max-w-12 max-h-12">
+        <button className="p-2 rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none">
           <span className="sr-only">View notifications</span>
           <img
             src={NotificationBellIcon}
-            alt="setting"
-            width={25}
-            height={25}
+            alt="notifications"
+            width={22}
+            height={22}
           />
         </button>
 
@@ -161,7 +273,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
 
           {/* Dropdown menu */}
           {isProfileOpen && (
-            <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+            <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
               <div className="py-1">
                 <div className="px-4 py-2 border-b">
                   <p className="text-sm font-medium text-gray-900">

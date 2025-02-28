@@ -11,7 +11,6 @@ import {
 import { WeeklyActivity } from "../../types";
 import { createBarChartData, chartColors } from "../../utils/charts";
 import { formatCurrency } from "../../utils/formatters";
-import { use } from "react";
 
 ChartJS.register(
   CategoryScale,

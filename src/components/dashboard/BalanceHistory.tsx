@@ -11,7 +11,6 @@ import {
   Tooltip,
   Legend,
   Filler,
-  ChartType,
 } from "chart.js";
 import { BalanceHistory as BalanceHistoryType } from "../../types";
 import {

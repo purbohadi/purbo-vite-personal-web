@@ -1,6 +1,5 @@
 // src/components/layout/Sidebar.tsx
 import { Link, useLocation } from "react-router-dom";
-import { useUserStore } from "../../store/userStore";
 import LogoIcon from "../../assets/icons/logo.svg";
 
 // Define the navigation items

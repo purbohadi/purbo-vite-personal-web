@@ -1,5 +1,5 @@
 import { TransactionSummary } from "../../types";
-import { formatCurrency, formatDate } from "../../utils/formatters";
+import { formatCurrency } from "../../utils/formatters";
 
 import PaypalIcon from "../../assets/icons/paypal.svg";
 import WithdrawalIcon from "../../assets/icons/withdrawal.svg";

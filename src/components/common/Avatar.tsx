@@ -1,7 +1,6 @@
 // src/components/common/Avatar.tsx
 import { useState } from "react";
 import { generateInitialAvatar } from "../../utils/avatarUtils";
-import AvatarCathSrc from "../../assets/avatars/catherine.jpg";
 
 export type AvatarSize = "xs" | "sm" | "md" | "lg" | "xl";
 

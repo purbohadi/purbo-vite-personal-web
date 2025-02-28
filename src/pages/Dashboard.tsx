@@ -23,7 +23,6 @@ const Dashboard: React.FC = () => {
     isLoading,
     error,
     refetch,
-    lastUpdated,
   } = useDashboardData();
 
   const { addNotification } = useNotificationContext();

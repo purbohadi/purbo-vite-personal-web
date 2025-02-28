@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import { Contact } from "../../types";
 import { formatCurrency } from "../../utils/formatters";
 import { isNotEmpty } from "../../utils/validators";
-import { useDebounce } from "../../hooks/useDebounce";
 import Card from "../common/Card";
 import Button from "../common/Button";
 import Input from "../common/Input";
@@ -50,9 +49,6 @@ const QuickTransfer: React.FC<QuickTransferProps> = ({
       container.scrollBy({ left: 200, behavior: "smooth" });
     }
   };
-
-  // Use debounce to prevent too frequent updates
-  const debouncedAmount = useDebounce(amount, 300);
 
   const handleContactSelect = (id: string) => {
     setSelectedContact(id === selectedContact ? null : id);

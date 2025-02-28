@@ -1,12 +1,12 @@
 // src/App.tsx
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import Settings from './pages/Settings';
-import { useAuth } from './hooks/useAuth';
-import NotificationProvider from './components/providers/NotificationProvider';
-import Dashboard from './pages/Dashboard';
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Settings from "./pages/Settings";
+// import { useAuth } from "./hooks/useAuth";
+import NotificationProvider from "./components/providers/NotificationProvider";
+import Dashboard from "./pages/Dashboard";
 
 const App: React.FC = () => {
-  const { isAuthenticated } = useAuth();
+  // const { isAuthenticated } = useAuth();
 
   return (
     <BrowserRouter>
