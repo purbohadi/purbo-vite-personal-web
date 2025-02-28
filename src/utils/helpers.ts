@@ -8,26 +8,7 @@
 export const generateId = (prefix: string = 'id'): string => {
     return `${prefix}-${Math.random().toString(36).substring(2, 9)}-${Date.now().toString(36)}`;
   };
-  
-  /**
-   * Throttle a function to prevent it from being called too frequently
-   */
-  export const throttle = <T extends (...args: any[]) => any>(
-    func: T,
-    limit: number
-  ): ((...args: Parameters<T>) => void) => {
-    let inThrottle: boolean;
-    let lastResult: ReturnType<T>;
     
-    return function(this: any, ...args: Parameters<T>): void {
-      if (!inThrottle) {
-        lastResult = func.apply(this, args);
-        inThrottle = true;
-        setTimeout(() => (inThrottle = false), limit);
-      }
-    };
-  };
-  
   /**
    * Debounce a function
    */
