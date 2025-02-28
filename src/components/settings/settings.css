@@ -1,0 +1,65 @@
+/* src/components/settings/settings.css */
+/* Styles specific to settings pages */
+
+/* Password strength indicator */
+.password-strength-bar {
+    height: 6px;
+    border-radius: 3px;
+    margin-top: 8px;
+    margin-bottom: 12px;
+    transition: width 0.3s ease;
+  }
+  
+  .password-strength-text {
+    font-size: 0.75rem;
+    text-align: right;
+    margin-top: 4px;
+  }
+  
+  .strength-weak {
+    background-color: #ef4444;
+    width: 25%;
+  }
+  
+  .strength-medium {
+    background-color: #f59e0b;
+    width: 50%;
+  }
+  
+  .strength-strong {
+    background-color: #10b981;
+    width: 100%;
+  }
+  
+  /* Profile picture upload styles */
+  .profile-image-upload {
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .profile-image-upload:hover .profile-image-overlay {
+    opacity: 1;
+  }
+  
+  .profile-image-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    border-radius: 9999px;
+  }
+  
+  /* Settings form error styles */
+  .settings-input-error {
+    border-color: #ef4444;
+  }
+  
+  .settings-input-error-message {
+    color: #ef4444;
+    font-size: 0.75rem;
+    margin-top: 2px;
+  }

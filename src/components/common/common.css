@@ -1,0 +1,92 @@
+/* src/components/common/common.css */
+/* Styles for common UI components */
+
+/* Button loading spinner */
+.btn-spinner {
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Toast notification animations */
+  .toast-enter {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  
+  .toast-enter-active {
+    transform: translateX(0);
+    opacity: 1;
+    transition: transform 0.3s, opacity 0.3s;
+  }
+  
+  .toast-exit {
+    opacity: 1;
+  }
+  
+  .toast-exit-active {
+    transform: translateX(100%);
+    opacity: 0;
+    transition: transform 0.3s, opacity 0.3s;
+  }
+  
+  /* Form input focus styles */
+  .input-focus-ring {
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 0 0 0 transparent;
+  }
+  
+  .input-focus-ring:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+  }
+  
+  /* Skeleton loading animation */
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      #f3f4f6 25%,
+      #e5e7eb 50%,
+      #f3f4f6 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+  
+  @keyframes shimmer {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+  
+  /* Badge styles */
+  .badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+  
+  .badge-primary {
+    background-color: #eef2ff;
+    color: #4f46e5;
+  }
+  
+  .badge-success {
+    background-color: #ecfdf5;
+    color: #059669;
+  }
+  
+  .badge-danger {
+    background-color: #fef2f2;
+    color: #dc2626;
+  }
