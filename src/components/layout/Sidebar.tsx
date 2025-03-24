@@ -324,7 +324,7 @@ const Sidebar: React.FC = () => {
       <div className="py-6 px-6 flex items-center">
         <img src={LogoIcon} alt="logo" width={35} height={35} />
         <span className="ml-2 font-bold text-xl text-primary-title">
-          Soar Task
+          My Dashboard
         </span>
       </div>
 
