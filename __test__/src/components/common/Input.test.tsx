@@ -338,7 +338,6 @@ describe('Input Component', () => {
       render(<Input id="test-input" error="Error message" />);
       
       const input = screen.getByRole('textbox');
-      const errorId = input.getAttribute('aria-describedby');
       
       // The component doesn't implement aria-describedby, but we can test the structure
       expect(input).toBeInTheDocument();

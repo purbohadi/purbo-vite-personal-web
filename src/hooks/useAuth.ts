@@ -31,7 +31,7 @@ export function useAuth(): UseAuthResult {
     user: User | null;
     token: string | null;
   }>('auth_data', { user: null, token: null });
-  
+
   const [state, setState] = useState<AuthState>({
     user: authData.user,
     token: authData.token,
@@ -43,11 +43,11 @@ export function useAuth(): UseAuthResult {
   // In a real app, this would call your auth API endpoint
   const login = useCallback(async (email: string, password: string): Promise<boolean> => {
     setState(prev => ({ ...prev, isLoading: true, error: null }));
-    
+
     try {
       // Mock login - replace with actual API call in production
       await new Promise(resolve => setTimeout(resolve, 800));
-      
+
       if (email === 'user@example.com' && password === 'password') {
         const userData = {
           id: '1',
@@ -55,9 +55,9 @@ export function useAuth(): UseAuthResult {
           email: 'user@example.com',
           role: 'admin'
         };
-        
+
         const token = 'mock-jwt-token-' + Math.random().toString(36).substr(2);
-        
+
         // Update state and localStorage
         setState({
           user: userData,
@@ -66,17 +66,17 @@ export function useAuth(): UseAuthResult {
           isLoading: false,
           error: null
         });
-        
+
         setAuthData({ user: userData, token });
         return true;
       } else {
         throw new Error('Invalid credentials');
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       setState(prev => ({
         ...prev,
         isLoading: false,
-        error: error.message || 'Authentication failed'
+        error: error instanceof Error ? error.message : 'Authentication failed'
       }));
       return false;
     }
@@ -90,23 +90,23 @@ export function useAuth(): UseAuthResult {
       isLoading: false,
       error: null
     });
-    
+
     setAuthData({ user: null, token: null });
   }, [setAuthData]);
 
   const checkAuth = useCallback(async (): Promise<boolean> => {
     if (!state.token) return false;
-    
+
     setState(prev => ({ ...prev, isLoading: true }));
-    
+
     try {
       // In a real app, verify the token with the server
       await new Promise(resolve => setTimeout(resolve, 500));
-      
+
       // Token is valid (in a real app, this would check with the server)
       setState(prev => ({ ...prev, isLoading: false, isAuthenticated: true }));
       return true;
-    } catch (error) {
+    } catch {
       // Token is invalid
       logout();
       return false;

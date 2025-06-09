@@ -1,7 +1,6 @@
 import React from 'react';
 import '@testing-library/jest-dom';
 import { render, screen, fireEvent, waitFor } from '../test-utils';
-import { act } from '@testing-library/react';
 import Settings from '../../../src/pages/Settings';
 
 // Mock the hooks

@@ -78,7 +78,7 @@ const EditProfile: React.FC = () => {
     try {
       await updateProfile(values);
       addNotification("success", "Profile updated successfully!");
-    } catch (error) {
+    } catch {
       addNotification("error", "Failed to update profile");
     }
   });
@@ -99,7 +99,21 @@ const EditProfile: React.FC = () => {
   };
 
   // Custom DateInput component with dropdown icon
-  const DateInput = ({ label, name, value, onChange, onBlur, error }: any) => {
+  const DateInput = ({ 
+    label, 
+    name, 
+    value, 
+    onChange, 
+    onBlur, 
+    error 
+  }: {
+    label: string;
+    name: string;
+    value: string;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onBlur: (e: React.FocusEvent<HTMLInputElement>) => void;
+    error?: string;
+  }) => {
     return (
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">

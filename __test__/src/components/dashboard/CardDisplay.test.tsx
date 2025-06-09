@@ -4,7 +4,7 @@ import { CardSummary } from '@/types';
 
 // Mock the formatCardNumber utility
 jest.mock('@/utils/formatters', () => ({
-  formatCardNumber: jest.fn((cardNumber: string) => '**** **** **** 1234'),
+  formatCardNumber: jest.fn(() => '**** **** **** 1234'),
 }));
 
 const mockCard: CardSummary = {

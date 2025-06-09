@@ -251,7 +251,6 @@ describe('charts', () => {
     });
 
     describe('getChartGradient', () => {
-        let mockCanvas: HTMLCanvasElement;
         let mockContext: CanvasRenderingContext2D;
         let mockGradient: CanvasGradient;
 
@@ -265,11 +264,6 @@ describe('charts', () => {
             mockContext = {
                 createLinearGradient: jest.fn().mockReturnValue(mockGradient),
             } as unknown as CanvasRenderingContext2D;
-
-            // Create mock canvas
-            mockCanvas = {
-                getContext: jest.fn().mockReturnValue(mockContext),
-            } as unknown as HTMLCanvasElement;
         });
 
         it('should create a linear gradient', () => {

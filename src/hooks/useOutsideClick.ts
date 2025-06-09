@@ -8,22 +8,22 @@ import { useEffect, RefObject } from 'react';
  * @param dependencies Additional dependencies for the effect
  */
 export function useOutsideClick<T extends HTMLElement>(
-    ref: RefObject<T | null>, // Changed to accept null
-    callback: () => void,
-    dependencies: any[] = []
-  ): void {
-    useEffect(() => {
-      function handleClickOutside(event: MouseEvent) {
-        if (ref.current && !ref.current.contains(event.target as Node)) {
-          callback();
-        }
+  ref: RefObject<T | null>, // Changed to accept null
+  callback: () => void,
+  dependencies: unknown[] = []
+): void {
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
+        callback();
       }
-  
-      // Bind the event listener
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => {
-        // Unbind the event listener on clean up
-        document.removeEventListener('mousedown', handleClickOutside);
-      };
-    }, [ref, callback, ...dependencies]);
-  }
+    }
+
+    // Bind the event listener
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      // Unbind the event listener on clean up
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [ref, callback, ...dependencies]);
+}

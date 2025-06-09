@@ -32,7 +32,7 @@ export function usePagination({
   const [currentPage, setCurrentPage] = useState(initialPage);
 
   // Calculate totalPages
-  const totalPages = useMemo(() => 
+  const totalPages = useMemo(() =>
     Math.max(1, Math.ceil(totalItems / itemsPerPage)),
     [totalItems, itemsPerPage]
   );
@@ -47,13 +47,13 @@ export function usePagination({
   // Generate page numbers to display
   const visiblePageNumbers = useMemo(() => {
     let startPage = Math.max(1, currentPage - Math.floor(maxPages / 2));
-    let endPage = Math.min(totalPages, startPage + maxPages - 1);
-    
+    const endPage = Math.min(totalPages, startPage + maxPages - 1);
+
     // Adjust if we're near the end
     if (endPage === totalPages) {
       startPage = Math.max(1, endPage - maxPages + 1);
     }
-    
+
     const pages = [];
     for (let i = startPage; i <= endPage; i++) {
       pages.push(i);
