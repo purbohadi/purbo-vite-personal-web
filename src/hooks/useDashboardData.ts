@@ -1,6 +1,6 @@
 // src/hooks/useDashboardData.ts
 import { useState, useEffect, useCallback } from 'react';
-import { api } from '../mock/apiService';
+import { api } from '../mocks/apiService';
 import { useLocalStorage } from './useLocalStorage';
 import { Card, Transaction, ExpenseCategory, Contact, BalanceHistory, WeeklyActivity } from '../types';
 
@@ -27,7 +27,7 @@ export function useDashboardData(): UseDashboardDataResult {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
-  
+
   // Initialize with empty data
   const [data, setData] = useState<DashboardData>({
     cards: [],
@@ -37,7 +37,7 @@ export function useDashboardData(): UseDashboardDataResult {
     balanceHistory: { labels: [], values: [] },
     weeklyActivity: { labels: [], deposits: [], withdrawals: [] },
   });
-  
+
   // Check local storage cache (with timestamp)
   const [cachedData, setCachedData] = useLocalStorage<{
     data: DashboardData;
@@ -57,7 +57,7 @@ export function useDashboardData(): UseDashboardDataResult {
 
     setIsLoading(true);
     setError(null);
-    
+
     try {
       // Fetch all data in parallel
       const [cards, transactions, expenseCategories, contacts, balanceHistory, weeklyActivity] = await Promise.all([
@@ -68,9 +68,9 @@ export function useDashboardData(): UseDashboardDataResult {
         api.getBalanceHistory(),
         api.getWeeklyActivity()
       ]);
-      
+
       const newData = { cards, transactions, expenseCategories, contacts, balanceHistory, weeklyActivity };
-      
+
       // Update state and cache
       setData(newData);
       setCachedData({
@@ -78,7 +78,7 @@ export function useDashboardData(): UseDashboardDataResult {
         timestamp: Date.now()
       });
       setLastUpdated(new Date());
-      
+
     } catch (err) {
       setError('Failed to load dashboard data. Please try again.');
       console.error('Error fetching dashboard data:', err);
@@ -86,12 +86,12 @@ export function useDashboardData(): UseDashboardDataResult {
       setIsLoading(false);
     }
   }, [isLoading, cachedData, setCachedData]); // Added isLoading to dependencies
-  
+
   // Initial data load - run only once when component mounts
   useEffect(() => {
     fetchData();
   }, []); // Empty dependency array to ensure it runs only once
-  
+
   // Create a stable refetch function that doesn't change on every render
   const refetch = useCallback(() => {
     return fetchData();

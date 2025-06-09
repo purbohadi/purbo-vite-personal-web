@@ -3,7 +3,7 @@ import { Card } from "../../types";
 import { formatCardNumber, formatCurrency } from "../../utils/formatters";
 import Button from "../common/Button";
 import { useIsMobile } from "../../hooks/useMediaQuery";
-import { assets } from "../../mock/assets";
+import { assets } from "../../mocks/assets";
 
 interface CardSectionProps {
   cards: Card[];
