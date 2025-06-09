@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/7</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/23</span>
+                <span class='fraction'>23/23</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/7</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -171,7 +171,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -184,26 +184,26 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">36x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">36x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">36x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">36x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">36x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -225,7 +225,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">36x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -246,7 +246,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// src/components/common/Button.tsx
 import { ButtonHTMLAttributes, ReactNode } from "react";
 &nbsp;
@@ -263,39 +263,39 @@ interface ButtonProps extends ButtonHTMLAttributes&lt;HTMLButtonElement&gt; {
   children: ReactNode;
 }
 &nbsp;
-const Button: React.FC&lt;ButtonProps&gt; = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >({</span></span>
-  variant = <span class="branch-0 cbranch-no" title="branch not covered" >"primary",</span>
-  size = <span class="branch-0 cbranch-no" title="branch not covered" >"md",</span>
-  isLoading = <span class="branch-0 cbranch-no" title="branch not covered" >false,</span>
+const Button: React.FC&lt;ButtonProps&gt; = ({
+  variant = "primary",
+  size = "md",
+  isLoading = false,
   leftIcon,
   rightIcon,
-  fullWidth = <span class="branch-0 cbranch-no" title="branch not covered" >false,</span>
+  fullWidth = false,
   children,
-  className = <span class="branch-0 cbranch-no" title="branch not covered" >"",</span>
+  className = "",
   disabled,
   ...rest
 }) =&gt; {
   const baseStyles =
-<span class="cstat-no" title="statement not covered" >    "inline-flex items-center justify-center font-medium transition-colors focus:outline-none";</span>
+    "inline-flex items-center justify-center font-medium transition-colors focus:outline-none";
 &nbsp;
   // Styles based on the designs in screenshots
-  const variantStyles = <span class="cstat-no" title="statement not covered" >{</span>
+  const variantStyles = {
     primary: "bg-black text-white hover:bg-gray-800 rounded-lg",
     secondary: "bg-gray-100 text-gray-800 hover:bg-gray-200 rounded-lg",
     text: "bg-transparent text-blue-600 hover:text-blue-800 hover:underline",
     custom: "bg-black text-white hover:bg-gray-800 rounded-3xl",
   };
 &nbsp;
-  const sizeStyles = <span class="cstat-no" title="statement not covered" >{</span>
+  const sizeStyles = {
     sm: "text-xs px-2.5 py-1.5",
     md: "text-sm px-4 py-2",
     lg: "text-base px-6 py-3",
   };
 &nbsp;
-  const disabledStyles = <span class="cstat-no" title="statement not covered" >"opacity-50 cursor-not-allowed";</span>
+  const disabledStyles = "opacity-50 cursor-not-allowed";
 &nbsp;
   const loadingIndicator = (
-<span class="cstat-no" title="statement not covered" >    &lt;svg</span>
+    &lt;svg
       className="animate-spin -ml-1 mr-2 h-4 w-4 text-current"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
@@ -317,7 +317,7 @@ const Button: React.FC&lt;ButtonProps&gt; = <span class="cstat-no" title="statem
     &lt;/svg&gt;
   );
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return (</span>
+  return (
     &lt;button
       className={`
         ${baseStyles}
@@ -346,7 +346,7 @@ export default Button;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-06-09T04:16:13.537Z
+                at 2025-06-09T13:24:15.228Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
