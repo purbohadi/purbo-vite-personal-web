@@ -25,10 +25,13 @@ const Tabs: React.FC<TabsProps> = ({
   onChange,
   className = "",
 }) => {
-  const [activeTab, setActiveTab] = useState(defaultTab);
   const tabsArray = React.Children.toArray(
     children
   ) as React.ReactElement<TabProps>[];
+  
+  // Ensure defaultTab is within valid range
+  const validDefaultTab = Math.max(0, Math.min(defaultTab, tabsArray.length - 1));
+  const [activeTab, setActiveTab] = useState(validDefaultTab);
 
   const handleTabChange = (index: number) => {
     setActiveTab(index);
@@ -60,7 +63,7 @@ const Tabs: React.FC<TabsProps> = ({
         </div>
       </div>
 
-      <div className="p-6">{tabsArray[activeTab]}</div>
+      <div className="p-6">{tabsArray[activeTab] || null}</div>
     </div>
   );
 };

@@ -14,14 +14,17 @@ describe('Card Component', () => {
     it('applies default card styling', () => {
       render(<Card>Basic card</Card>);
       
-      const cardElement = screen.getByText('Basic card').closest('div');
+      // Get the outermost div (the card root)
+      const cardElement = screen.getByText('Basic card').closest('.bg-white');
       expect(cardElement).toHaveClass('bg-white', 'rounded-3xl', 'shadow');
     });
 
     it('applies default padding to content', () => {
       render(<Card>Content with padding</Card>);
       
-      const contentContainer = screen.getByText('Content with padding').parentElement;
+      // The content is inside the card, find the inner div with padding
+      const contentContainer = document.querySelector('.p-6.pt-0');
+      expect(contentContainer).toBeInTheDocument();
       expect(contentContainer).toHaveClass('p-6', 'pt-0');
     });
   });
@@ -103,18 +106,22 @@ describe('Card Component', () => {
 
   describe('Padding Control', () => {
     it('applies default padding when noPadding is false', () => {
-      render(<Card>Default padding</Card>);
+      render(<Card noPadding={false}>Default padding</Card>);
       
-      const contentContainer = screen.getByText('Default padding').parentElement;
+      const contentContainer = document.querySelector('.p-6.pt-0');
+      expect(contentContainer).toBeInTheDocument();
       expect(contentContainer).toHaveClass('p-6', 'pt-0');
     });
 
     it('removes padding when noPadding is true', () => {
       render(<Card noPadding>No padding content</Card>);
       
+      // When noPadding is true, there should be no p-6 pt-0 classes
       const contentContainer = screen.getByText('No padding content').parentElement;
       expect(contentContainer).not.toHaveClass('p-6', 'pt-0');
-      expect(contentContainer).toHaveClass('');
+      // Check that the container with padding classes doesn't exist
+      const paddedContainer = document.querySelector('.p-6.pt-0');
+      expect(paddedContainer).not.toBeInTheDocument();
     });
 
     it('removes padding for cards with title when noPadding is true', () => {
@@ -129,21 +136,22 @@ describe('Card Component', () => {
     it('applies custom className', () => {
       render(<Card className="custom-card-class">Custom styled</Card>);
       
-      const cardElement = screen.getByText('Custom styled').closest('div');
+      // Get the root card element which has the custom class
+      const cardElement = screen.getByText('Custom styled').closest('.bg-white');
       expect(cardElement).toHaveClass('custom-card-class');
     });
 
     it('combines custom className with default classes', () => {
       render(<Card className="border-2 border-red-500">Combined classes</Card>);
       
-      const cardElement = screen.getByText('Combined classes').closest('div');
+      const cardElement = screen.getByText('Combined classes').closest('.bg-white');
       expect(cardElement).toHaveClass('bg-white', 'rounded-3xl', 'shadow', 'border-2', 'border-red-500');
     });
 
     it('applies empty string className by default', () => {
       render(<Card>Default className</Card>);
       
-      const cardElement = screen.getByText('Default className').closest('div');
+      const cardElement = screen.getByText('Default className').closest('.bg-white');
       // Should not have any extra classes beyond the base ones
       expect(cardElement).toHaveClass('bg-white', 'rounded-3xl', 'shadow');
     });
@@ -200,7 +208,8 @@ describe('Card Component', () => {
       const action = <button>Action</button>;
       render(<Card title="Structure Test" action={action}>Content</Card>);
       
-      const cardElement = screen.getByText('Content').closest('div');
+      // Get the root card element
+      const cardElement = screen.getByText('Content').closest('.bg-white');
       const children = Array.from(cardElement?.children || []);
       
       // Should have header div and content div
@@ -210,7 +219,7 @@ describe('Card Component', () => {
     it('has correct structure without title', () => {
       render(<Card>Content only</Card>);
       
-      const cardElement = screen.getByText('Content only').closest('div');
+      const cardElement = screen.getByText('Content only').closest('.bg-white');
       const children = Array.from(cardElement?.children || []);
       
       // Should have only content div
@@ -220,7 +229,7 @@ describe('Card Component', () => {
     it('maintains proper DOM hierarchy', () => {
       render(<Card title="Hierarchy Test">Nested content</Card>);
       
-      const card = screen.getByText('Nested content').closest('div');
+      const card = screen.getByText('Nested content').closest('.bg-white');
       const title = screen.getByText('Hierarchy Test');
       const content = screen.getByText('Nested content');
       
@@ -255,7 +264,7 @@ describe('Card Component', () => {
     it('maintains structure on different screen sizes', () => {
       render(<Card title="Responsive Test" className="w-full md:w-1/2">Responsive content</Card>);
       
-      const cardElement = screen.getByText('Responsive content').closest('div');
+      const cardElement = screen.getByText('Responsive content').closest('.bg-white');
       expect(cardElement).toHaveClass('w-full', 'md:w-1/2');
     });
   });
@@ -320,7 +329,7 @@ describe('Card Component', () => {
       expect(screen.getByTestId('all-props-action')).toBeInTheDocument();
       expect(screen.getByText('Combined props content')).toBeInTheDocument();
       
-      const cardElement = screen.getByText('Combined props content').closest('div');
+      const cardElement = screen.getByText('Combined props content').closest('.bg-white');
       expect(cardElement).toHaveClass('custom-combined');
       
       const contentContainer = screen.getByText('Combined props content').parentElement;

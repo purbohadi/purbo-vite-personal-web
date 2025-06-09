@@ -5,6 +5,7 @@ interface SkeletonProps {
   borderRadius?: string;
   className?: string;
   animation?: 'pulse' | 'wave' | 'none';
+  'data-testid'?: string;
 }
 
 const Skeleton: React.FC<SkeletonProps> = ({
@@ -13,6 +14,7 @@ const Skeleton: React.FC<SkeletonProps> = ({
   borderRadius = '0.25rem',
   className = '',
   animation = 'pulse',
+  'data-testid': dataTestId,
 }) => {
   const animationClass = {
     pulse: 'animate-pulse',
@@ -24,6 +26,7 @@ const Skeleton: React.FC<SkeletonProps> = ({
     <div
       className={`bg-gray-200 ${animationClass[animation]} ${className}`}
       style={{ height, width, borderRadius }}
+      data-testid={dataTestId}
     />
   );
 };
@@ -33,6 +36,7 @@ interface SkeletonTextProps {
   spacing?: string;
   className?: string;
   animation?: 'pulse' | 'wave' | 'none';
+  'data-testid'?: string;
 }
 
 export const SkeletonText: React.FC<SkeletonTextProps> = ({
@@ -40,13 +44,17 @@ export const SkeletonText: React.FC<SkeletonTextProps> = ({
   spacing = '0.5rem',
   className = '',
   animation = 'pulse',
+  'data-testid': dataTestId,
 }) => {
+  // Ensure lines is a valid positive integer
+  const validLines = Math.max(0, Math.floor(lines));
+  
   return (
-    <div className={className} style={{ display: 'flex', flexDirection: 'column', gap: spacing }}>
-      {[...Array(lines)].map((_, i) => (
+    <div className={className} style={{ display: 'flex', flexDirection: 'column', gap: spacing }} data-testid={dataTestId}>
+      {[...Array(validLines)].map((_, i) => (
         <Skeleton 
           key={i} 
-          width={i === lines - 1 ? '70%' : '100%'} // Last line is shorter
+          width={i === validLines - 1 ? '70%' : '100%'} // Last line is shorter
           animation={animation}
         />
       ))}
