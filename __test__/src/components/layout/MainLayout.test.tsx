@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { render, screen, fireEvent } from '../../test-utils';
+import { render, screen } from '../../test-utils';
 import MainLayout from '../../../../src/components/layout/MainLayout';
 
 describe('MainLayout', () => {
