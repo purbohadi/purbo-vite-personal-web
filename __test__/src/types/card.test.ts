@@ -269,33 +269,33 @@ export const isValidCardType = (type: string): type is 'visa' | 'mastercard' => 
     return ['visa', 'mastercard'].includes(type as 'visa' | 'mastercard');
 };
 
-export const isCard = (obj: any): obj is Card => {
+export const isCard = (obj: unknown): obj is Card => {
     return (
         typeof obj === 'object' &&
         obj !== null &&
-        typeof obj.id === 'string' &&
-        typeof obj.cardNumber === 'string' &&
-        typeof obj.cardholderName === 'string' &&
-        typeof obj.balance === 'number' &&
-        typeof obj.formattedBalance === 'string' &&
-        isValidCardType(obj.type) &&
-        typeof obj.expiry === 'string' &&
-        typeof obj.cvv === 'string' &&
-        typeof obj.isActive === 'boolean'
+        typeof (obj as Record<string, unknown>).id === 'string' &&
+        typeof (obj as Record<string, unknown>).cardNumber === 'string' &&
+        typeof (obj as Record<string, unknown>).cardholderName === 'string' &&
+        typeof (obj as Record<string, unknown>).balance === 'number' &&
+        typeof (obj as Record<string, unknown>).formattedBalance === 'string' &&
+        isValidCardType((obj as Record<string, unknown>).type as string) &&
+        typeof (obj as Record<string, unknown>).expiry === 'string' &&
+        typeof (obj as Record<string, unknown>).cvv === 'string' &&
+        typeof (obj as Record<string, unknown>).isActive === 'boolean'
     );
 };
 
-export const isCardSummary = (obj: any): obj is CardSummary => {
+export const isCardSummary = (obj: unknown): obj is CardSummary => {
     return (
         typeof obj === 'object' &&
         obj !== null &&
-        typeof obj.id === 'string' &&
-        typeof obj.cardNumber === 'string' &&
-        typeof obj.cardholderName === 'string' &&
-        typeof obj.balance === 'number' &&
-        typeof obj.formattedBalance === 'string' &&
-        isValidCardType(obj.type) &&
-        typeof obj.expiry === 'string'
+        typeof (obj as Record<string, unknown>).id === 'string' &&
+        typeof (obj as Record<string, unknown>).cardNumber === 'string' &&
+        typeof (obj as Record<string, unknown>).cardholderName === 'string' &&
+        typeof (obj as Record<string, unknown>).balance === 'number' &&
+        typeof (obj as Record<string, unknown>).formattedBalance === 'string' &&
+        isValidCardType((obj as Record<string, unknown>).type as string) &&
+        typeof (obj as Record<string, unknown>).expiry === 'string'
     );
 };
 

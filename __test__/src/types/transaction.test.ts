@@ -328,34 +328,36 @@ export const isValidTransactionStatus = (status: string): status is TransactionS
     return ['completed', 'pending', 'failed'].includes(status as TransactionStatus);
 };
 
-export const isTransaction = (obj: any): obj is Transaction => {
+export const isTransaction = (obj: unknown): obj is Transaction => {
+    const record = obj as Record<string, unknown>;
     return (
         typeof obj === 'object' &&
         obj !== null &&
-        typeof obj.id === 'string' &&
-        isValidTransactionType(obj.type) &&
-        typeof obj.description === 'string' &&
-        typeof obj.date === 'string' &&
-        typeof obj.timestamp === 'number' &&
-        typeof obj.amount === 'number' &&
-        typeof obj.formattedAmount === 'string' &&
-        typeof obj.category === 'string' &&
-        typeof obj.iconColor === 'string' &&
-        isValidTransactionStatus(obj.status)
+        typeof record.id === 'string' &&
+        isValidTransactionType(record.type as string) &&
+        typeof record.description === 'string' &&
+        typeof record.date === 'string' &&
+        typeof record.timestamp === 'number' &&
+        typeof record.amount === 'number' &&
+        typeof record.formattedAmount === 'string' &&
+        typeof record.category === 'string' &&
+        typeof record.iconColor === 'string' &&
+        isValidTransactionStatus(record.status as string)
     );
 };
 
-export const isTransactionSummary = (obj: any): obj is TransactionSummary => {
+export const isTransactionSummary = (obj: unknown): obj is TransactionSummary => {
+    const record = obj as Record<string, unknown>;
     return (
         typeof obj === 'object' &&
         obj !== null &&
-        typeof obj.id === 'string' &&
-        isValidTransactionType(obj.type) &&
-        typeof obj.description === 'string' &&
-        typeof obj.date === 'string' &&
-        typeof obj.amount === 'number' &&
-        typeof obj.formattedAmount === 'string' &&
-        typeof obj.iconColor === 'string'
+        typeof record.id === 'string' &&
+        isValidTransactionType(record.type as string) &&
+        typeof record.description === 'string' &&
+        typeof record.date === 'string' &&
+        typeof record.amount === 'number' &&
+        typeof record.formattedAmount === 'string' &&
+        typeof record.iconColor === 'string'
     );
 };
 

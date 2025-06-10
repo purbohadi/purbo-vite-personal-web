@@ -3,7 +3,7 @@ import { ReactElement, ReactNode } from 'react';
 import { MemoryRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-export const queryClient = new QueryClient({
+const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: false,
@@ -32,17 +32,17 @@ const customRender = (
   options?: Omit<RenderOptions, 'wrapper'>
 ) =>
   render(ui, {
-    wrapper: (props: any) => (
+    wrapper: (props: { children: ReactNode }) => (
       <MockProviders {...props} {...options} initialEntries={initialEntries} />
     ),
     ...options
   });
 
-const renderHookWrapper = ({ children }: { children: ReactNode }) => (
+const RenderHookWrapper = ({ children }: { children: ReactNode }) => (
   <MemoryRouter>
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   </MemoryRouter>
 );
 
-export * from '@testing-library/react';
-export { customRender as render, renderHookWrapper, MockProviders }; 
+export { customRender as render, RenderHookWrapper, MockProviders, queryClient };
+export * from '@testing-library/react'; 

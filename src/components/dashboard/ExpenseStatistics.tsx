@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Pie } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, ChartOptions, TooltipItem, Chart } from "chart.js";
 import { ExpenseCategory } from "../../types";
 import { createPieChartData } from "../../utils/charts";
 import { formatPercentage } from "../../utils/formatters";
@@ -22,7 +22,7 @@ interface LabelPosition {
 const ExpenseStatistics: React.FC<ExpenseStatisticsProps> = ({
   categories,
 }) => {
-  const chartRef = useRef<any>(null);
+  const chartRef = useRef<Chart<'pie', number[], string> | null>(null);
   const [labelPositions, setLabelPositions] = useState<LabelPosition[]>([]);
 
   const chartData = createPieChartData(
@@ -41,15 +41,15 @@ const ExpenseStatistics: React.FC<ExpenseStatisticsProps> = ({
     })),
   };
 
-  const options = {
+  const options: ChartOptions<'pie'> = {
     plugins: {
       legend: {
         display: false,
       },
       tooltip: {
         callbacks: {
-          label: function (context: any) {
-            return `$ ${context.raw * 10}`;
+          label: function (context: TooltipItem<'pie'>) {
+            return `$ ${Number(context.raw) * 10}`;
           },
         },
       },
@@ -86,10 +86,10 @@ const ExpenseStatistics: React.FC<ExpenseStatisticsProps> = ({
     const radius = Math.min(chart.chartArea.width, chart.chartArea.height) / 2;
 
     // For each arc in the chart
-    meta.data.forEach((arc: any, index: number) => {
+    meta.data.forEach((arc, index: number) => {
       // Get the middle angle of the arc in radians
-      const startAngle = arc.startAngle;
-      const endAngle = arc.endAngle;
+      const startAngle = (arc as { startAngle: number; endAngle: number }).startAngle;
+      const endAngle = (arc as { startAngle: number; endAngle: number }).endAngle;
       const middleAngle = (startAngle + endAngle) / 2;
 
       // Calculate the position at 2/3 distance from center to edge

@@ -353,35 +353,37 @@ describe('User Types', () => {
 });
 
 // Type guard utility functions for testing
-export const isUserProfile = (obj: any): obj is UserProfile => {
+export const isUserProfile = (obj: unknown): obj is UserProfile => {
+    const record = obj as Record<string, unknown>;
     return (
         typeof obj === 'object' &&
         obj !== null &&
-        typeof obj.id === 'string' &&
-        typeof obj.name === 'string' &&
-        typeof obj.username === 'string' &&
-        typeof obj.email === 'string' &&
-        typeof obj.dob === 'string' &&
-        typeof obj.presentAddress === 'string' &&
-        typeof obj.permanentAddress === 'string' &&
-        typeof obj.city === 'string' &&
-        typeof obj.postalCode === 'string' &&
-        typeof obj.country === 'string' &&
-        typeof obj.profileImage === 'string' &&
-        typeof obj.joinDate === 'string'
+        typeof record.id === 'string' &&
+        typeof record.name === 'string' &&
+        typeof record.username === 'string' &&
+        typeof record.email === 'string' &&
+        typeof record.dob === 'string' &&
+        typeof record.presentAddress === 'string' &&
+        typeof record.permanentAddress === 'string' &&
+        typeof record.city === 'string' &&
+        typeof record.postalCode === 'string' &&
+        typeof record.country === 'string' &&
+        typeof record.profileImage === 'string' &&
+        typeof record.joinDate === 'string'
     );
 };
 
-export const isUserSession = (obj: any): obj is UserSession => {
+export const isUserSession = (obj: unknown): obj is UserSession => {
+    const record = obj as Record<string, unknown>;
     return (
         typeof obj === 'object' &&
         obj !== null &&
-        typeof obj.id === 'string' &&
-        typeof obj.device === 'string' &&
-        typeof obj.location === 'string' &&
-        typeof obj.lastActive === 'string' &&
-        typeof obj.ipAddress === 'string' &&
-        typeof obj.isCurrent === 'boolean'
+        typeof record.id === 'string' &&
+        typeof record.device === 'string' &&
+        typeof record.location === 'string' &&
+        typeof record.lastActive === 'string' &&
+        typeof record.ipAddress === 'string' &&
+        typeof record.isCurrent === 'boolean'
     );
 };
 

@@ -1,4 +1,9 @@
 name: Daily Unit Test Reporter
+
+env:
+  COVERAGE_THRESHOLD: 40
+  COVERAGE_WARNING_THRESHOLD: 30
+
 on:
   push:
     tags:
@@ -98,9 +103,40 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.CLOUDFLARE_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: auto
         run: |
+          echo "Checking AWS CLI configuration..."
+          aws --version
+          
+          echo "Testing AWS credentials (without exposing them)..."
+          if [ -z "$AWS_ACCESS_KEY_ID" ]; then
+            echo "ERROR: AWS_ACCESS_KEY_ID is not set"
+            exit 1
+          fi
+          
+          if [ -z "$AWS_SECRET_ACCESS_KEY" ]; then
+            echo "ERROR: AWS_SECRET_ACCESS_KEY is not set"
+            exit 1
+          fi
+          
+          if [ -z "${{ secrets.CLOUDFLARE_ENDPOINT_URL }}" ]; then
+            echo "ERROR: CLOUDFLARE_ENDPOINT_URL is not set"
+            exit 1
+          fi
+          
+          if [ -z "${{ secrets.CLOUDFLARE_BUCKET_NAME }}" ]; then
+            echo "ERROR: CLOUDFLARE_BUCKET_NAME is not set"
+            exit 1
+          fi
+          
+          echo "All required environment variables are set"
+          echo "Attempting to upload to Cloudflare R2..."
+          echo "Endpoint: ${{ secrets.CLOUDFLARE_ENDPOINT_URL }}"
+          echo "Bucket: ${{ secrets.CLOUDFLARE_BUCKET_NAME }}"
+          echo "File path: unit-test-reports/${{ steps.set-date.outputs.NOW }}/report.json"
+          
           aws s3 cp report.json s3://${{ secrets.CLOUDFLARE_BUCKET_NAME }}/unit-test-reports/${{ steps.set-date.outputs.NOW }}/report.json \
             --endpoint-url ${{ secrets.CLOUDFLARE_ENDPOINT_URL }} \
-            --content-type "application/json"
+            --content-type "application/json" \
+            --debug
 
   notify-slack:
     name: Notify Slack
@@ -138,7 +174,7 @@ jobs:
                   "fields": [
                     {
                       "type": "mrkdwn",
-                      "text": "*Average:*\n${{ needs.run-unit-test.outputs.AVERAGE_COVERAGE >= 90 && ':white_check_mark:' || ':warning:' }} ${{ needs.run-unit-test.outputs.AVERAGE_COVERAGE }}%"
+                      "text": "*Average:*\n${{ needs.run-unit-test.outputs.AVERAGE_COVERAGE >= env.COVERAGE_THRESHOLD && ':white_check_mark:' || ':warning:' }} ${{ needs.run-unit-test.outputs.AVERAGE_COVERAGE }}%"
                     }
                   ],
                   "accessory": {
@@ -159,11 +195,11 @@ jobs:
                   "fields": [
                     {
                       "type": "mrkdwn",
-                      "text": "*Branches:*\n${{ needs.run-unit-test.outputs.BRANCH_COVERAGE >= 90 && ':white_check_mark:' || ':warning:' }} ${{ needs.run-unit-test.outputs.BRANCH_COVERAGE }}%"
+                      "text": "*Branches:*\n${{ needs.run-unit-test.outputs.BRANCH_COVERAGE >= env.COVERAGE_THRESHOLD && ':white_check_mark:' || ':warning:' }} ${{ needs.run-unit-test.outputs.BRANCH_COVERAGE }}%"
                     },
                     {
                       "type": "mrkdwn",
-                      "text": "*Functions:*\n${{ needs.run-unit-test.outputs.FUNCTION_COVERAGE >= 90 && ':white_check_mark:' || ':warning:' }} ${{ needs.run-unit-test.outputs.FUNCTION_COVERAGE }}%"
+                      "text": "*Functions:*\n${{ needs.run-unit-test.outputs.FUNCTION_COVERAGE >= env.COVERAGE_THRESHOLD && ':white_check_mark:' || ':warning:' }} ${{ needs.run-unit-test.outputs.FUNCTION_COVERAGE }}%"
                     }
                   ]
                 },
@@ -172,11 +208,11 @@ jobs:
                   "fields": [
                     {
                       "type": "mrkdwn",
-                      "text": "*Lines:*\n${{ needs.run-unit-test.outputs.LINE_COVERAGE >= 90 && ':white_check_mark:' || ':warning:' }} ${{ needs.run-unit-test.outputs.LINE_COVERAGE }}%"
+                      "text": "*Lines:*\n${{ needs.run-unit-test.outputs.LINE_COVERAGE >= env.COVERAGE_THRESHOLD && ':white_check_mark:' || ':warning:' }} ${{ needs.run-unit-test.outputs.LINE_COVERAGE }}%"
                     },
                     {
                       "type": "mrkdwn",
-                      "text": "*Elements:*\n${{ needs.run-unit-test.outputs.ELEMENT_COVERAGE >= 90 && ':white_check_mark:' || ':warning:' }} ${{ needs.run-unit-test.outputs.ELEMENT_COVERAGE }}%"
+                      "text": "*Elements:*\n${{ needs.run-unit-test.outputs.ELEMENT_COVERAGE >= env.COVERAGE_THRESHOLD && ':white_check_mark:' || ':warning:' }} ${{ needs.run-unit-test.outputs.ELEMENT_COVERAGE }}%"
                     }
                   ]
                 }

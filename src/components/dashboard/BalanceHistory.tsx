@@ -11,6 +11,9 @@ import {
   Tooltip,
   Legend,
   Filler,
+  TooltipItem,
+  ChartOptions,
+  Chart,
 } from "chart.js";
 import { BalanceHistory as BalanceHistoryType } from "../../types";
 import {
@@ -36,7 +39,7 @@ interface BalanceHistoryProps {
 }
 
 const BalanceHistory: React.FC<BalanceHistoryProps> = ({ data }) => {
-  const chartRef = useRef<any>(null);
+  const chartRef = useRef<Chart<'line', number[], string> | null>(null);
 
   // Use chart utils to create line chart data
   const chartData = createLineChartData(
@@ -69,7 +72,7 @@ const BalanceHistory: React.FC<BalanceHistoryProps> = ({ data }) => {
     }
   }, [data]);
 
-  const options = {
+  const options: ChartOptions<'line'> = {
     color: "#718EBF",
     responsive: true,
     maintainAspectRatio: false,
@@ -81,7 +84,7 @@ const BalanceHistory: React.FC<BalanceHistoryProps> = ({ data }) => {
         mode: "index" as const,
         intersect: false,
         callbacks: {
-          label: function (context: any) {
+          label: function (context: TooltipItem<'line'>) {
             // Use formatter util for currency display
             return `Balance: ${formatCurrency(context.parsed.y)}`;
           },
@@ -92,17 +95,15 @@ const BalanceHistory: React.FC<BalanceHistoryProps> = ({ data }) => {
       y: {
         beginAtZero: false,
         grid: {
-          drawBorder: false,
           display: true,
           drawOnChartArea: true,
           drawTicks: false,
-          borderDash: [5, 5],
         },
         ticks: {
           color: "#718EBF",
           // Use formatter util
-          callback: function (value: any) {
-            return formatCurrency(value, "USD", false);
+          callback: function (value: string | number) {
+            return formatCurrency(Number(value), "USD", false);
           },
           stepSize: 200,
         },
@@ -110,7 +111,6 @@ const BalanceHistory: React.FC<BalanceHistoryProps> = ({ data }) => {
       x: {
         grid: {
           display: true,
-          drawBorder: false,
         },
         ticks: {
           color: "#718EBF",

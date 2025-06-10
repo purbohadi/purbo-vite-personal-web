@@ -100,8 +100,8 @@ describe('formatters', () => {
                     return new originalDate(dateString);
                 }
                 return new originalDate('2023-06-15T10:30:00Z');
-            }) as any;
-            (global.Date as any).now = jest.fn(() => new originalDate('2023-06-15T10:30:00Z').getTime());
+            }) as jest.MockedClass<typeof Date>;
+            (global.Date as jest.MockedClass<typeof Date>).now = jest.fn(() => new originalDate('2023-06-15T10:30:00Z').getTime());
         });
 
         afterEach(() => {

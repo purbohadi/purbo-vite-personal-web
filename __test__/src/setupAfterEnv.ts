@@ -8,6 +8,7 @@ import { QueryCache } from '@tanstack/react-query';
 
 // Add polyfills for TextEncoder/TextDecoder if not available
 if (typeof global.TextEncoder === 'undefined') {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { TextEncoder, TextDecoder } = require('util');
     global.TextEncoder = TextEncoder;
     global.TextDecoder = TextDecoder;
@@ -15,6 +16,7 @@ if (typeof global.TextEncoder === 'undefined') {
 
 // Add polyfills for Fetch API and related Web APIs for MSW
 if (typeof global.fetch === 'undefined') {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const fetch = require('node-fetch');
     global.fetch = fetch;
     global.Headers = fetch.Headers;
@@ -24,6 +26,7 @@ if (typeof global.fetch === 'undefined') {
 
 // Add polyfills for ReadableStream and related APIs
 if (typeof global.ReadableStream === 'undefined') {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { ReadableStream, WritableStream, TransformStream } = require('web-streams-polyfill');
     global.ReadableStream = ReadableStream;
     global.WritableStream = WritableStream;
@@ -34,18 +37,19 @@ if (typeof global.ReadableStream === 'undefined') {
 if (typeof global.BroadcastChannel === 'undefined') {
     // Simple mock for BroadcastChannel
     class MockBroadcastChannel {
-        constructor(name: string) { }
-        postMessage(message: any) { }
+        constructor() { }
+        postMessage() { }
         close() { }
-        addEventListener(event: string, handler: any) { }
-        removeEventListener(event: string, handler: any) { }
-        dispatchEvent(event: any) { }
+        addEventListener() { }
+        removeEventListener() { }
+        dispatchEvent() { return true; }
     }
-    global.BroadcastChannel = MockBroadcastChannel as any;
+    global.BroadcastChannel = MockBroadcastChannel as unknown as typeof BroadcastChannel;
 }
 
 // Add URL polyfill if needed
 if (typeof global.URL === 'undefined') {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const { URL, URLSearchParams } = require('url');
     global.URL = URL;
     global.URLSearchParams = URLSearchParams;
@@ -61,7 +65,7 @@ class ResizeObserver {
 // Create a simple mock server that simulates MSW functionality
 const createMockServer = () => {
     return {
-        listen: (options?: any) => {
+        listen: () => {
             console.log('✅ Mock MSW server started for testing');
         },
         close: () => {
@@ -78,12 +82,12 @@ const consoleError = console.error;
 const consoleWarn = console.warn;
 let mockConsoleError: jest.SpyInstance;
 let mockConsoleWarn: jest.SpyInstance;
-let server: any;
+let server: ReturnType<typeof createMockServer>;
 
 beforeAll(async () => {
     // Initialize mock server instead of real MSW for now
     server = createMockServer();
-    server.listen({ onUnhandledRequest: 'bypass' });
+    server.listen();
 
     // Mock console.warn to filter out specific messages
     mockConsoleWarn = jest.spyOn(console, 'warn').mockImplementation((...args) => {
@@ -170,4 +174,4 @@ afterEach(() => {
 });
 
 // Add structuredClone polyfill
-global.structuredClone = (val) => JSON.parse(JSON.stringify(val)); 
+global.structuredClone = (val: unknown) => JSON.parse(JSON.stringify(val)); 

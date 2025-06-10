@@ -276,59 +276,63 @@ describe('Dashboard Types', () => {
 });
 
 // Type guard utility functions for testing
-export const isExpenseCategory = (obj: any): obj is ExpenseCategory => {
+export const isExpenseCategory = (obj: unknown): obj is ExpenseCategory => {
     return (
         typeof obj === 'object' &&
         obj !== null &&
-        typeof obj.id === 'string' &&
-        typeof obj.name === 'string' &&
-        typeof obj.percentage === 'number' &&
-        typeof obj.amount === 'number' &&
-        typeof obj.color === 'string'
+        typeof (obj as Record<string, unknown>).id === 'string' &&
+        typeof (obj as Record<string, unknown>).name === 'string' &&
+        typeof (obj as Record<string, unknown>).percentage === 'number' &&
+        typeof (obj as Record<string, unknown>).amount === 'number' &&
+        typeof (obj as Record<string, unknown>).color === 'string'
     );
 };
 
-export const isWeeklyActivity = (obj: any): obj is WeeklyActivity => {
+export const isWeeklyActivity = (obj: unknown): obj is WeeklyActivity => {
+    const record = obj as Record<string, unknown>;
     return (
         typeof obj === 'object' &&
         obj !== null &&
-        Array.isArray(obj.labels) &&
-        Array.isArray(obj.deposits) &&
-        Array.isArray(obj.withdrawals) &&
-        obj.labels.length === obj.deposits.length &&
-        obj.labels.length === obj.withdrawals.length &&
-        obj.deposits.every((d: any) => typeof d === 'number') &&
-        obj.withdrawals.every((w: any) => typeof w === 'number')
+        Array.isArray(record.labels) &&
+        Array.isArray(record.deposits) &&
+        Array.isArray(record.withdrawals) &&
+        record.labels.length === record.deposits.length &&
+        record.labels.length === record.withdrawals.length &&
+        record.deposits.every((d: unknown) => typeof d === 'number') &&
+        record.withdrawals.every((w: unknown) => typeof w === 'number')
     );
 };
 
-export const isBalanceHistory = (obj: any): obj is BalanceHistory => {
+export const isBalanceHistory = (obj: unknown): obj is BalanceHistory => {
+    const record = obj as Record<string, unknown>;
     return (
         typeof obj === 'object' &&
         obj !== null &&
-        Array.isArray(obj.labels) &&
-        Array.isArray(obj.values) &&
-        obj.labels.length === obj.values.length &&
-        obj.values.every((v: any) => typeof v === 'number')
+        Array.isArray(record.labels) &&
+        Array.isArray(record.values) &&
+        record.labels.length === record.values.length &&
+        record.values.every((v: unknown) => typeof v === 'number')
     );
 };
 
-export const isChartDataset = (obj: any): obj is ChartDataset => {
+export const isChartDataset = (obj: unknown): obj is ChartDataset => {
+    const record = obj as Record<string, unknown>;
     return (
         typeof obj === 'object' &&
         obj !== null &&
-        Array.isArray(obj.data) &&
-        obj.data.every((d: any) => typeof d === 'number')
+        Array.isArray(record.data) &&
+        record.data.every((d: unknown) => typeof d === 'number')
     );
 };
 
-export const isChartData = (obj: any): obj is ChartData => {
+export const isChartData = (obj: unknown): obj is ChartData => {
+    const record = obj as Record<string, unknown>;
     return (
         typeof obj === 'object' &&
         obj !== null &&
-        Array.isArray(obj.labels) &&
-        Array.isArray(obj.datasets) &&
-        obj.datasets.every(isChartDataset)
+        Array.isArray(record.labels) &&
+        Array.isArray(record.datasets) &&
+        record.datasets.every(isChartDataset)
     );
 };
 

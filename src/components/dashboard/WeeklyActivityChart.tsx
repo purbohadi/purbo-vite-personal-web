@@ -7,6 +7,8 @@ import {
   Title,
   Tooltip,
   Legend,
+  ChartOptions,
+  TooltipItem,
 } from "chart.js";
 import { WeeklyActivity } from "../../types";
 import { createBarChartData, chartColors } from "../../utils/charts";
@@ -40,10 +42,8 @@ const WeeklyActivityChart: React.FC<WeeklyActivityChartProps> = ({ data }) => {
     },
   ]);
 
-  const options = {
+  const options: ChartOptions<'bar'> = {
     color: "#718EBF",
-    pointStyle: "circle",
-    borderRadius: 10,
     responsive: true,
     // barThickness: 5,
     barPercentage: 0.5,
@@ -51,14 +51,13 @@ const WeeklyActivityChart: React.FC<WeeklyActivityChartProps> = ({ data }) => {
       y: {
         beginAtZero: true,
         grid: {
-          drawBorder: false,
           color: "rgba(0, 0, 0, 0.1)",
         },
         ticks: {
           color: "#718EBF",
           // Use formatter util
-          callback: function (value: any) {
-            return formatCurrency(value, "USD", false);
+          callback: function (value: string | number) {
+            return formatCurrency(Number(value), "USD", false);
           },
           stepSize: 100,
         },
@@ -81,7 +80,7 @@ const WeeklyActivityChart: React.FC<WeeklyActivityChartProps> = ({ data }) => {
       },
       tooltip: {
         callbacks: {
-          label: function (context: any) {
+          label: function (context: TooltipItem<'bar'>) {
             // Use formatter util
             return `${context.dataset.label}: ${formatCurrency(
               context.parsed.y
