@@ -1,7 +1,6 @@
-import React from 'react';
 import '@testing-library/jest-dom';
 import { render, screen, fireEvent } from '../../test-utils';
-import Tabs, { Tab } from '../../../../src/components/common/Tabs';
+import { Tabs, TabList, Tab, TabPanels, TabPanel } from '../../../../src/components/common/Tabs';
 
 describe('Tabs Component', () => {
   const DefaultTabsSetup = () => (

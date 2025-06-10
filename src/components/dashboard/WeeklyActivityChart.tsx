@@ -46,7 +46,6 @@ const WeeklyActivityChart: React.FC<WeeklyActivityChartProps> = ({ data }) => {
     color: "#718EBF",
     responsive: true,
     // barThickness: 5,
-    barPercentage: 0.5,
     scales: {
       y: {
         beginAtZero: true,

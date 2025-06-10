@@ -3,6 +3,7 @@ name: Daily Unit Test Reporter
 env:
   COVERAGE_THRESHOLD: 40
   COVERAGE_WARNING_THRESHOLD: 30
+  PROJECT_NAME: admin-dashboard
 
 on:
   push:
@@ -131,9 +132,9 @@ jobs:
           echo "Attempting to upload to Cloudflare R2..."
           echo "Endpoint: ${{ secrets.CLOUDFLARE_ENDPOINT_URL }}"
           echo "Bucket: ${{ secrets.CLOUDFLARE_BUCKET_NAME }}"
-          echo "File path: unit-test-reports/${{ steps.set-date.outputs.NOW }}/report.json"
+          echo "File path: unit-test-reports/${{ env.PROJECT_NAME }}/${{ steps.set-date.outputs.NOW }}/report.json"
           
-          aws s3 cp report.json s3://${{ secrets.CLOUDFLARE_BUCKET_NAME }}/unit-test-reports/${{ steps.set-date.outputs.NOW }}/report.json \
+          aws s3 cp report.json s3://${{ secrets.CLOUDFLARE_BUCKET_NAME }}/unit-test-reports/${{ env.PROJECT_NAME }}/${{ steps.set-date.outputs.NOW }}/report.json \
             --endpoint-url ${{ secrets.CLOUDFLARE_ENDPOINT_URL }} \
             --content-type "application/json" \
             --debug

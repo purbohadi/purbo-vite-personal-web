@@ -1,4 +1,3 @@
-import React from 'react';
 import '@testing-library/jest-dom';
 import { render, screen, fireEvent } from '../../test-utils';
 import Toast from '../../../../src/components/common/Toast';

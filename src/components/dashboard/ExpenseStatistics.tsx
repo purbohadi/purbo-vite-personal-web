@@ -88,8 +88,8 @@ const ExpenseStatistics: React.FC<ExpenseStatisticsProps> = ({
     // For each arc in the chart
     meta.data.forEach((arc, index: number) => {
       // Get the middle angle of the arc in radians
-      const startAngle = (arc as { startAngle: number; endAngle: number }).startAngle;
-      const endAngle = (arc as { startAngle: number; endAngle: number }).endAngle;
+      const startAngle = (arc as unknown as { startAngle: number; endAngle: number }).startAngle;
+      const endAngle = (arc as unknown as { startAngle: number; endAngle: number }).endAngle;
       const middleAngle = (startAngle + endAngle) / 2;
 
       // Calculate the position at 2/3 distance from center to edge
