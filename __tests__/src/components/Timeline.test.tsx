@@ -20,7 +20,7 @@ describe('Timeline', () => {
   it('renders all experience items', () => {
     render(<Timeline darkMode={false} />);
     
-    experiences.forEach((experience, index) => {
+    experiences.forEach((experience) => {
       expect(screen.getByText(experience.role)).toBeInTheDocument();
       // Use getAllByText for company in case of duplicates
       expect(screen.getAllByText(experience.company).length).toBeGreaterThan(0);
@@ -77,7 +77,7 @@ describe('Timeline', () => {
   it('renders experience descriptions with correct styles', () => {
     render(<Timeline darkMode={true} />);
     
-    experiences.forEach((experience, index) => {
+    experiences.forEach((index) => {
       const description = screen.getByTestId(`timeline-description-${index}`);
       // In dark mode, description should have text-white
       expect(description).toHaveClass('text-white');
