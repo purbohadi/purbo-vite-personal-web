@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router";
 
 import NotFoundImg from "../../assets/image/Photo-min.png";
-import Button from "../../components/buttons";
 
 function NotFound() {
   const navigate = useNavigate();
@@ -19,14 +18,12 @@ function NotFound() {
         <p className="my-0 text-center text-3xl font-bold text-black-90">
           Kami tidak menemukan halaman yang Anda cari
         </p>
-        <Button
+        <button
           onClick={() => navigate("/campaign")}
-          type="primary"
-          size="large"
-          className="w-2/4"
+          className="w-2/4 py-2 px-4 bg-blue-600 text-white rounded-lg text-lg font-semibold hover:bg-blue-700 transition"
         >
           Kembali
-        </Button>
+        </button>
       </div>
     </div>
   );

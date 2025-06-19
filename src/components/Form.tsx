@@ -1,6 +1,7 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import emailjs from "emailjs-com";
+import { getEnvVar } from "../utils/env";
 
 export default function SimpleRegistrationForm({
   darkMode,
@@ -12,10 +13,6 @@ export default function SimpleRegistrationForm({
     email: "",
     message: "",
   });
-
-  const SERVICE_ID: string = import.meta.env.VITE_SERVICE_ID;
-  const TEMPLATE_ID: string = import.meta.env.VITE_TEMPLATE_ID;
-  const USER_ID: string = import.meta.env.VITE_USER_ID;
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -33,7 +30,12 @@ export default function SimpleRegistrationForm({
       formData.message !== "" &&
       validateEmail(formData.email)
     ) {
-      emailjs.send(SERVICE_ID, TEMPLATE_ID, formData, USER_ID).then(
+      emailjs.send(
+        getEnvVar('VITE_SERVICE_ID'),
+        getEnvVar('VITE_TEMPLATE_ID'),
+        formData,
+        getEnvVar('VITE_USER_ID')
+      ).then(
         (response) => {
           console.log("SUCCESS!", response.status, response.text);
           alert("Message sent successfully!");

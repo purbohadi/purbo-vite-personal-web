@@ -1,56 +1,76 @@
-import "./App.css";
 import { useState, useEffect } from "react";
-import { Navbar } from "./components";
+import "./App.css";
 import { Home, Education, Experience, Contact, Footer } from "./sections";
+import { Navbar } from "./components";
 
-function App() {
-  const [isDarkModeOn, setIsDarkModeOn] = useState<boolean>(
-    localStorage.getItem("darkMode") === "true"
-  );
+export default function App() {
+  const [isDarkModeOn, setIsDarkModeOn] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('darkMode') === 'true';
+    }
+    return false;
+  });
+
+  const toggleDarkMode = () => {
+    setIsDarkModeOn((prev) => {
+      const next = !prev;
+      localStorage.setItem('darkMode', next ? 'true' : 'false');
+      return next;
+    });
+  };
 
   useEffect(() => {
-    localStorage.setItem("darkMode", JSON.stringify(isDarkModeOn));
+    localStorage.setItem('darkMode', isDarkModeOn ? 'true' : 'false');
   }, [isDarkModeOn]);
 
   return (
     <div
-      className={`flex flex-col items-center sm:p-10 p-4 text-black ${
-        isDarkModeOn ? "bg-gray-700" : ""
+      className={`min-h-screen ${
+        isDarkModeOn ? "bg-gray-700" : "bg-gray-100"
       }`}
+      role="main"
     >
       <Navbar />
-      <Home darkMode={isDarkModeOn} />
-      <Education darkMode={isDarkModeOn} />
-      <Experience darkMode={isDarkModeOn} />
-      <Contact darkMode={isDarkModeOn} />
+      <Home darkMode={isDarkModeOn} role="region" sectionClass={isDarkModeOn ? "bg-gray-900" : ""} />
+      <Education darkMode={isDarkModeOn} role="region" sectionClass={isDarkModeOn ? "bg-gray-900" : ""} />
+      <Experience darkMode={isDarkModeOn} role="region" sectionClass={isDarkModeOn ? "bg-gray-900" : ""} />
+      <Contact darkMode={isDarkModeOn} role="region" sectionClass={isDarkModeOn ? "bg-gray-900" : ""} />
       <Footer darkMode={isDarkModeOn} />
       <div
-        className={`w-12 h-12 ${
-          isDarkModeOn ? "bg-gray-300" : "bg-gray-800"
-        } fixed right-14 bottom-6 rounded-full sm:flex justify-center items-center hidden cursor-pointer shadow-lg`}
-        onClick={() => setIsDarkModeOn((prev) => !prev)}
+        className={`fixed bottom-4 right-4 flex gap-4 ${
+          isDarkModeOn ? "text-white" : "text-black"
+        }`}
       >
-        {!isDarkModeOn ? (
+        <button
+          onClick={toggleDarkMode}
+          className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
+          aria-label="Toggle Dark Mode"
+        >
           <svg
-            width="20"
-            height="20"
-            viewBox="0 0 100 100"
             xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 100 100"
+            width="24"
+            height="24"
+            className={isDarkModeOn ? "hidden" : ""}
+            role="img"
+            aria-label="Moon"
           >
             <path
-              d="M50,0 A50,50 0 1,0 50,100 A30,50 0 1,1 50,0"
-              fill="white"
+              d="M50 75c-13.807 0-25-11.193-25-25s11.193-25 25-25 25 11.193 25 25-11.193 25-25 25zm0-45c-11.046 0-20 8.954-20 20s8.954 20 20 20 20-8.954 20-20-8.954-20-20-20z"
+              fill="currentColor"
             />
           </svg>
-        ) : (
           <svg
-            width="30"
-            height="30"
-            viewBox="0 0 100 100"
             xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 100 100"
+            width="24"
+            height="24"
+            className={isDarkModeOn ? "" : "hidden"}
+            role="img"
+            aria-label="Sun"
           >
-            <circle cx="50" cy="50" r="20" fill="black" />
-            <g stroke="black" stroke-width="4">
+            <circle cx="50" cy="50" r="20" fill="currentColor" />
+            <g stroke="currentColor" strokeWidth="4">
               <line x1="50" y1="10" x2="50" y2="0" />
               <line x1="50" y1="90" x2="50" y2="100" />
               <line x1="10" y1="50" x2="0" y2="50" />
@@ -61,10 +81,8 @@ function App() {
               <line x1="25" y1="75" x2="15" y2="85" />
             </g>
           </svg>
-        )}
+        </button>
       </div>
     </div>
   );
 }
-
-export default App;

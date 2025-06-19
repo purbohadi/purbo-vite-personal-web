@@ -10,26 +10,18 @@ import {
 import { ComputerDesktopIcon, ClockIcon } from "@heroicons/react/24/solid";
 import useInView from "../hooks/useInView";
 import { experiences } from "../information";
-import { ReactNode } from "react";
-
-interface Experience {
-  role: string;
-  company: string;
-  duration: string;
-  description: string;
-  icon: ReactNode;
-}
+import { Experience } from "../types";
 
 export default function TimelineWithIcon({ darkMode }: { darkMode: boolean }) {
   const refs = experiences.map(() => useInView({ threshold: 0.9 }));
   const icons = [
-    <ClockIcon className={`h-4 w-4 ${darkMode ? "" : ""}`} />,
-    <ComputerDesktopIcon className={`h-4 w-4 ${darkMode ? "" : ""}`} />,
-    <ComputerDesktopIcon className={`h-4 w-4 ${darkMode ? "" : ""}`} />,
-    <ComputerDesktopIcon className={`h-4 w-4 ${darkMode ? "" : ""}`} />,
-    <ComputerDesktopIcon className={`h-4 w-4 ${darkMode ? "" : ""}`} />,
-    <ComputerDesktopIcon className={`h-4 w-4 ${darkMode ? "" : ""}`} />,
-    <ComputerDesktopIcon className={`h-4 w-4 ${darkMode ? "" : ""}`} />,
+    <ClockIcon key="clock" className={`h-4 w-4 ${darkMode ? "" : ""}`} />,
+    <ComputerDesktopIcon key="desktop1" className={`h-4 w-4 ${darkMode ? "" : ""}`} />,
+    <ComputerDesktopIcon key="desktop2" className={`h-4 w-4 ${darkMode ? "" : ""}`} />,
+    <ComputerDesktopIcon key="desktop3" className={`h-4 w-4 ${darkMode ? "" : ""}`} />,
+    <ComputerDesktopIcon key="desktop4" className={`h-4 w-4 ${darkMode ? "" : ""}`} />,
+    <ComputerDesktopIcon key="desktop5" className={`h-4 w-4 ${darkMode ? "" : ""}`} />,
+    <ComputerDesktopIcon key="desktop6" className={`h-4 w-4 ${darkMode ? "" : ""}`} />,
   ];
 
   return (
@@ -47,11 +39,12 @@ export default function TimelineWithIcon({ darkMode }: { darkMode: boolean }) {
               }`}
             >
               {index < experiences.length - 1 && isNextInView && (
-                <TimelineConnector />
+                <TimelineConnector data-testid="timeline-connector" />
               )}
               <TimelineHeader>
                 <TimelineIcon
                   className={`p-2 ${darkMode ? "bg-gray-700" : ""}`}
+                  data-testid="timeline-icon"
                 >
                   {icons[index]}
                 </TimelineIcon>
@@ -84,6 +77,7 @@ export default function TimelineWithIcon({ darkMode }: { darkMode: boolean }) {
                   className={`font-normal text-gray-600 text-justify ${
                     darkMode ? "text-white" : ""
                   }`}
+                  data-testid={`timeline-description-${index}`}
                 >
                   {experience.description}
                 </Typography>

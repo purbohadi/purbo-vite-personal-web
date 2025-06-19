@@ -34,6 +34,7 @@ export default function StepperWithIcon({
                         activeClassName={darkMode ? "bg-gray-700" : ""}
                         completedClassName={darkMode ? "bg-gray-700" : ""}
                         onClick={() => setActiveStep(idx)}
+                        data-testid={`step-${idx}`}
                     >
                         <img src={uni.countryFlag} className="w-5 h-5" />
                     </Step>
