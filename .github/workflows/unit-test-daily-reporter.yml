@@ -27,9 +27,9 @@ jobs:
       AVERAGE_COVERAGE: ${{ steps.main-coverage.outputs.AVERAGE }}
     steps:
       - name: Setup Node.js (NPM)
-        uses: actions/setup-node@master
+        uses: actions/setup-node@v3
         with:
-          node-version: '18.12'
+          node-version: 18
       - name: Install Prerequisites
         run: |
           sudo apt-get install libxml2-utils
