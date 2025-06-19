@@ -49,7 +49,7 @@ jobs:
       - name: Get Main Branch Coverage
         id: main-coverage
         run: |
-          pnpm test:report --updateSnapshot
+          pnpm test:coverage
           BRANCHESCOVERED=$(xmllint --xpath 'string(/coverage/project/metrics/@coveredconditionals)' ./coverage/clover.xml)
           BRANCHESTOTAL=$(xmllint --xpath 'string(/coverage/project/metrics/@conditionals)' ./coverage/clover.xml)
           FUNCTIONSCOVERED=$(xmllint --xpath 'string(/coverage/project/metrics/@coveredmethods)' ./coverage/clover.xml)
