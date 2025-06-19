@@ -1,0 +1,221 @@
+name: Daily Unit Test Reporter
+
+env:
+  COVERAGE_THRESHOLD: 90
+  COVERAGE_WARNING_THRESHOLD: 80
+  PROJECT_NAME: personal-web
+
+on:
+  push:
+    tags:
+      - generate-unit-test-report-*
+  schedule:
+    - cron: '0 2 * * *' # Run every day at 2 AM GMT+0 (different from original to avoid conflicts)
+jobs:
+  run-unit-test:
+    name: Run Unit Test
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+      pull-requests: 'read'
+    runs-on: ubuntu-latest
+    outputs:
+      BRANCH_COVERAGE: ${{ steps.main-coverage.outputs.BRANCHES }}
+      FUNCTION_COVERAGE: ${{ steps.main-coverage.outputs.FUNCTIONS }}
+      LINE_COVERAGE: ${{ steps.main-coverage.outputs.LINES }}
+      ELEMENT_COVERAGE: ${{ steps.main-coverage.outputs.ELEMENTS }}
+      AVERAGE_COVERAGE: ${{ steps.main-coverage.outputs.AVERAGE }}
+    steps:
+      - name: Setup Node.js (NPM)
+        uses: actions/setup-node@master
+        with:
+          node-version: '18.12'
+      - name: Install Prerequisites
+        run: |
+          sudo apt-get install libxml2-utils
+          yarn global add pnpm
+      - name: Checkout Main Branch
+        uses: actions/checkout@v3
+      - name: Use cached node_modules
+        uses: actions/cache@master
+        with:
+          path: node_modules
+          key: nodeModules-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            nodeModules-
+      - name: Install Main dependencies
+        run: |
+          pnpm install --fix-lockfile
+      - name: Get Main Branch Coverage
+        id: main-coverage
+        run: |
+          pnpm test:report --updateSnapshot
+          BRANCHESCOVERED=$(xmllint --xpath 'string(/coverage/project/metrics/@coveredconditionals)' ./coverage/clover.xml)
+          BRANCHESTOTAL=$(xmllint --xpath 'string(/coverage/project/metrics/@conditionals)' ./coverage/clover.xml)
+          FUNCTIONSCOVERED=$(xmllint --xpath 'string(/coverage/project/metrics/@coveredmethods)' ./coverage/clover.xml)
+          FUNCTIONSTOTAL=$(xmllint --xpath 'string(/coverage/project/metrics/@methods)' ./coverage/clover.xml)
+          LINESCOVERED=$(xmllint --xpath 'string(/coverage/project/metrics/@coveredstatements)' ./coverage/clover.xml)
+          LINESTOTAL=$(xmllint --xpath 'string(/coverage/project/metrics/@statements)' ./coverage/clover.xml)
+          ELEMENTSCOVERED=$(xmllint --xpath 'string(/coverage/project/metrics/@coveredelements)' ./coverage/clover.xml)
+          ELEMENTSTOTAL=$(xmllint --xpath 'string(/coverage/project/metrics/@elements)' ./coverage/clover.xml)
+          echo "BRANCHES=$(echo "scale=2; ($BRANCHESCOVERED * 100) / $BRANCHESTOTAL" | bc)" >> $GITHUB_OUTPUT
+          echo "FUNCTIONS=$(echo "scale=2; ($FUNCTIONSCOVERED * 100) / $FUNCTIONSTOTAL" | bc)" >> $GITHUB_OUTPUT
+          echo "LINES=$(echo "scale=2; ($LINESCOVERED * 100) / $LINESTOTAL" | bc)" >> $GITHUB_OUTPUT
+          echo "ELEMENTS=$(echo "scale=2; ($ELEMENTSCOVERED * 100) / $ELEMENTSTOTAL" | bc)" >> $GITHUB_OUTPUT
+          echo "AVERAGE=$(echo "scale=2; (($BRANCHESCOVERED + $FUNCTIONSCOVERED + $LINESCOVERED + $ELEMENTSCOVERED) * 100) / ($BRANCHESTOTAL + $FUNCTIONSTOTAL + $LINESTOTAL + $ELEMENTSTOTAL)" | bc)" >> $GITHUB_OUTPUT
+
+  construct-json-report:
+    name: Construct JSON Report
+    runs-on: ubuntu-latest
+    needs: run-unit-test
+    outputs:
+      report: ${{ steps.construct-json-report.outputs.report }}
+    steps:
+      - name: Construct JSON Report
+        id: construct-json-report
+        run: |
+          echo '{"branch": ${{ needs.run-unit-test.outputs.BRANCH_COVERAGE }}, "function": ${{ needs.run-unit-test.outputs.FUNCTION_COVERAGE }}, "line": ${{ needs.run-unit-test.outputs.LINE_COVERAGE }}, "element": ${{ needs.run-unit-test.outputs.ELEMENT_COVERAGE }}, "average": ${{ needs.run-unit-test.outputs.AVERAGE_COVERAGE }} }' > report.json
+          echo "report=$(cat report.json)" >> $GITHUB_OUTPUT
+
+  upload-to-cloudflare:
+    name: Upload JSON Report to Cloudflare
+    runs-on: ubuntu-latest
+    needs: construct-json-report
+    steps:
+      - name: Set current date as env variable
+        id: set-date
+        run: echo "NOW=$(date +'%Y-%m-%dT%H:%M:%S')" >> $GITHUB_OUTPUT
+      - name: Download output
+        run: echo '${{ needs.construct-json-report.outputs.report }}' > report.json
+      - name: Install AWS CLI
+        run: |
+          if ! command -v aws &> /dev/null; then
+            echo "AWS CLI not found, installing..."
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+          else
+            echo "AWS CLI already installed:"
+            aws --version
+          fi
+      - name: Upload Report to Cloudflare
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.CLOUDFLARE_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.CLOUDFLARE_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: auto
+        run: |
+          echo "Checking AWS CLI configuration..."
+          aws --version
+          
+          echo "Testing AWS credentials (without exposing them)..."
+          if [ -z "$AWS_ACCESS_KEY_ID" ]; then
+            echo "ERROR: AWS_ACCESS_KEY_ID is not set"
+            exit 1
+          fi
+          
+          if [ -z "$AWS_SECRET_ACCESS_KEY" ]; then
+            echo "ERROR: AWS_SECRET_ACCESS_KEY is not set"
+            exit 1
+          fi
+          
+          if [ -z "${{ secrets.CLOUDFLARE_ENDPOINT_URL }}" ]; then
+            echo "ERROR: CLOUDFLARE_ENDPOINT_URL is not set"
+            exit 1
+          fi
+          
+          if [ -z "${{ secrets.CLOUDFLARE_BUCKET_NAME }}" ]; then
+            echo "ERROR: CLOUDFLARE_BUCKET_NAME is not set"
+            exit 1
+          fi
+          
+          echo "All required environment variables are set"
+          echo "Attempting to upload to Cloudflare R2..."
+          echo "Endpoint: ${{ secrets.CLOUDFLARE_ENDPOINT_URL }}"
+          echo "Bucket: ${{ secrets.CLOUDFLARE_BUCKET_NAME }}"
+          echo "File path: unit-test-reports/${{ env.PROJECT_NAME }}/${{ steps.set-date.outputs.NOW }}/report.json"
+          
+          aws s3 cp report.json s3://${{ secrets.CLOUDFLARE_BUCKET_NAME }}/unit-test-reports/${{ env.PROJECT_NAME }}/${{ steps.set-date.outputs.NOW }}/report.json \
+            --endpoint-url ${{ secrets.CLOUDFLARE_ENDPOINT_URL }} \
+            --content-type "application/json" \
+            --debug
+
+  notify-slack:
+    name: Notify Slack
+    runs-on: ubuntu-latest
+    needs: run-unit-test
+    steps:
+      - name: Notify Slack
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          channel-id: ${{ secrets.SLACK_CHANNEL_ID }}
+          payload: |
+            {
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "Unit Testing Report :test_tube:",
+                    "emoji": true
+                  }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Repository:*\n<${{ github.event.repository.html_url }} | ${{ github.event.repository.name || github.repository }}>"
+                    }
+                  ]
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Average:*\n${{ needs.run-unit-test.outputs.AVERAGE_COVERAGE >= env.COVERAGE_THRESHOLD && ':white_check_mark:' || ':warning:' }} ${{ needs.run-unit-test.outputs.AVERAGE_COVERAGE }}%"
+                    }
+                  ],
+                  "accessory": {
+                    "type": "button",
+                    "text": {
+                      "type": "plain_text",
+                      "text": "Open Workflow"
+                    },
+                    "style": "primary",
+                    "url": "${{ github.event.repository.html_url }}/actions/runs/${{ github.run_id }}"
+                  }
+                },
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Branches:*\n${{ needs.run-unit-test.outputs.BRANCH_COVERAGE >= env.COVERAGE_THRESHOLD && ':white_check_mark:' || ':warning:' }} ${{ needs.run-unit-test.outputs.BRANCH_COVERAGE }}%"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Functions:*\n${{ needs.run-unit-test.outputs.FUNCTION_COVERAGE >= env.COVERAGE_THRESHOLD && ':white_check_mark:' || ':warning:' }} ${{ needs.run-unit-test.outputs.FUNCTION_COVERAGE }}%"
+                    }
+                  ]
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Lines:*\n${{ needs.run-unit-test.outputs.LINE_COVERAGE >= env.COVERAGE_THRESHOLD && ':white_check_mark:' || ':warning:' }} ${{ needs.run-unit-test.outputs.LINE_COVERAGE }}%"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Elements:*\n${{ needs.run-unit-test.outputs.ELEMENT_COVERAGE >= env.COVERAGE_THRESHOLD && ':white_check_mark:' || ':warning:' }} ${{ needs.run-unit-test.outputs.ELEMENT_COVERAGE }}%"
+                    }
+                  ]
+                }
+              ]
+            } 
