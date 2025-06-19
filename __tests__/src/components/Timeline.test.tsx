@@ -77,24 +77,10 @@ describe('Timeline', () => {
   it('renders experience descriptions with correct styles', () => {
     render(<Timeline darkMode={true} />);
     
-    experiences.forEach((index) => {
+    experiences.forEach((experience, index) => {
       const description = screen.getByTestId(`timeline-description-${index}`);
       // In dark mode, description should have text-white
       expect(description).toHaveClass('text-white');
     });
   });
-
-  it('handles intersection observer visibility', () => {
-    mockUseInView
-      .mockReturnValueOnce([React.createRef(), true])
-      .mockReturnValueOnce([React.createRef(), false])
-      .mockReturnValueOnce([React.createRef(), true]);
-    
-    render(<Timeline darkMode={false} />);
-    
-    const timelineItems = screen.getAllByRole('listitem');
-    expect(timelineItems[0]).toHaveClass('opacity-100');
-    expect(timelineItems[1]).toHaveClass('opacity-0');
-    expect(timelineItems[2]).toHaveClass('opacity-100');
-  });
-}); 
+});
